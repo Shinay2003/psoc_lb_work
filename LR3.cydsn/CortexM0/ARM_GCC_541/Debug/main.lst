@@ -1,0 +1,989 @@
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.update_lcd,"ax",%progbits
+  20              		.align	2
+  21              		.global	update_lcd
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	update_lcd, %function
+  25              	update_lcd:
+  26              	.LFB33:
+  27              		.file 1 "main.c"
+   1:main.c        **** #include "project.h"
+   2:main.c        **** #include "stdio.h"
+   3:main.c        **** int ms_count, seconds, minutes, hours = 0;
+   4:main.c        **** int miliseconds=0;
+   5:main.c        **** char lcd_string[16];
+   6:main.c        **** 
+   7:main.c        **** void update_lcd()
+   8:main.c        **** {
+  28              		.loc 1 8 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  36 0002 82B0     		sub	sp, sp, #8
+  37              		.cfi_def_cfa_offset 16
+   9:main.c        ****     LCD_ClearDisplay();
+  38              		.loc 1 9 0
+  39 0004 0120     		movs	r0, #1
+  40 0006 FFF7FEFF 		bl	LCD_WriteControl
+  41              	.LVL0:
+  10:main.c        ****     //sprintf(lcd_string, "%02u:%02u:%02u",minutes, seconds,ms_count/100);
+  11:main.c        ****     sprintf(lcd_string, "%02u:%02u:%02u",minutes, seconds,miliseconds);
+  42              		.loc 1 11 0
+  43 000a 0A4B     		ldr	r3, .L2
+  44 000c 1B68     		ldr	r3, [r3]
+  45 000e 0A4A     		ldr	r2, .L2+4
+  46 0010 1268     		ldr	r2, [r2]
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 2
+
+
+  47 0012 0A4C     		ldr	r4, .L2+8
+  48 0014 0A49     		ldr	r1, .L2+12
+  49 0016 0968     		ldr	r1, [r1]
+  50 0018 0091     		str	r1, [sp]
+  51 001a 0A49     		ldr	r1, .L2+16
+  52 001c 2000     		movs	r0, r4
+  53 001e FFF7FEFF 		bl	sprintf
+  54              	.LVL1:
+  12:main.c        ****     LCD_Position(0, 0);
+  55              		.loc 1 12 0
+  56 0022 0021     		movs	r1, #0
+  57 0024 0020     		movs	r0, #0
+  58 0026 FFF7FEFF 		bl	LCD_Position
+  59              	.LVL2:
+  13:main.c        ****     LCD_PrintString(lcd_string);
+  60              		.loc 1 13 0
+  61 002a 2000     		movs	r0, r4
+  62 002c FFF7FEFF 		bl	LCD_PrintString
+  63              	.LVL3:
+  14:main.c        **** }
+  64              		.loc 1 14 0
+  65 0030 02B0     		add	sp, sp, #8
+  66              		@ sp needed
+  67 0032 10BD     		pop	{r4, pc}
+  68              	.L3:
+  69              		.align	2
+  70              	.L2:
+  71 0034 00000000 		.word	seconds
+  72 0038 00000000 		.word	minutes
+  73 003c 00000000 		.word	lcd_string
+  74 0040 00000000 		.word	.LANCHOR0
+  75 0044 00000000 		.word	.LC2
+  76              		.cfi_endproc
+  77              	.LFE33:
+  78              		.size	update_lcd, .-update_lcd
+  79              		.global	__aeabi_idiv
+  80              		.section	.text.ISR,"ax",%progbits
+  81              		.align	2
+  82              		.global	ISR
+  83              		.code	16
+  84              		.thumb_func
+  85              		.type	ISR, %function
+  86              	ISR:
+  87              	.LFB34:
+  15:main.c        **** 
+  16:main.c        **** CY_ISR(ISR)
+  17:main.c        **** {
+  88              		.loc 1 17 0
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 0
+  91              		@ frame_needed = 0, uses_anonymous_args = 0
+  92 0000 10B5     		push	{r4, lr}
+  93              		.cfi_def_cfa_offset 8
+  94              		.cfi_offset 4, -8
+  95              		.cfi_offset 14, -4
+  18:main.c        ****      ms_count++;
+  96              		.loc 1 18 0
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 3
+
+
+  97 0002 134A     		ldr	r2, .L6
+  98 0004 1368     		ldr	r3, [r2]
+  99 0006 0133     		adds	r3, r3, #1
+ 100 0008 1360     		str	r3, [r2]
+  19:main.c        ****     if (ms_count >= 1000)
+ 101              		.loc 1 19 0
+ 102 000a 124A     		ldr	r2, .L6+4
+ 103 000c 9342     		cmp	r3, r2
+ 104 000e 14DD     		ble	.L5
+  20:main.c        ****     {
+  21:main.c        ****         seconds++;
+ 105              		.loc 1 21 0
+ 106 0010 114A     		ldr	r2, .L6+8
+ 107 0012 1368     		ldr	r3, [r2]
+ 108 0014 0133     		adds	r3, r3, #1
+ 109 0016 1360     		str	r3, [r2]
+  22:main.c        ****         ms_count = 0;
+ 110              		.loc 1 22 0
+ 111 0018 0021     		movs	r1, #0
+ 112 001a 0D4A     		ldr	r2, .L6
+ 113 001c 1160     		str	r1, [r2]
+  23:main.c        ****         if (seconds >= 60)
+ 114              		.loc 1 23 0
+ 115 001e 3B2B     		cmp	r3, #59
+ 116 0020 0BDD     		ble	.L5
+  24:main.c        ****         {
+  25:main.c        ****             seconds = 0;
+ 117              		.loc 1 25 0
+ 118 0022 0022     		movs	r2, #0
+ 119 0024 0C4B     		ldr	r3, .L6+8
+ 120 0026 1A60     		str	r2, [r3]
+  26:main.c        ****             minutes++;
+ 121              		.loc 1 26 0
+ 122 0028 0C4A     		ldr	r2, .L6+12
+ 123 002a 1368     		ldr	r3, [r2]
+ 124 002c 0133     		adds	r3, r3, #1
+ 125 002e 1360     		str	r3, [r2]
+  27:main.c        ****             if (minutes >= 60)
+ 126              		.loc 1 27 0
+ 127 0030 3B2B     		cmp	r3, #59
+ 128 0032 02DD     		ble	.L5
+  28:main.c        ****             {
+  29:main.c        ****                 minutes = 0;
+ 129              		.loc 1 29 0
+ 130 0034 0022     		movs	r2, #0
+ 131 0036 094B     		ldr	r3, .L6+12
+ 132 0038 1A60     		str	r2, [r3]
+ 133              	.L5:
+  30:main.c        ****             }
+  31:main.c        ****         }
+  32:main.c        ****     }
+  33:main.c        ****      miliseconds=ms_count/100;
+ 134              		.loc 1 33 0
+ 135 003a 054B     		ldr	r3, .L6
+ 136 003c 1868     		ldr	r0, [r3]
+ 137 003e 6421     		movs	r1, #100
+ 138 0040 FFF7FEFF 		bl	__aeabi_idiv
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 4
+
+
+ 139              	.LVL4:
+ 140 0044 064B     		ldr	r3, .L6+16
+ 141 0046 1860     		str	r0, [r3]
+  34:main.c        ****      update_lcd();
+ 142              		.loc 1 34 0
+ 143 0048 FFF7FEFF 		bl	update_lcd
+ 144              	.LVL5:
+  35:main.c        ****    
+  36:main.c        **** }
+ 145              		.loc 1 36 0
+ 146              		@ sp needed
+ 147 004c 10BD     		pop	{r4, pc}
+ 148              	.L7:
+ 149 004e C046     		.align	2
+ 150              	.L6:
+ 151 0050 00000000 		.word	ms_count
+ 152 0054 E7030000 		.word	999
+ 153 0058 00000000 		.word	seconds
+ 154 005c 00000000 		.word	minutes
+ 155 0060 00000000 		.word	.LANCHOR0
+ 156              		.cfi_endproc
+ 157              	.LFE34:
+ 158              		.size	ISR, .-ISR
+ 159              		.section	.text.main,"ax",%progbits
+ 160              		.align	2
+ 161              		.global	main
+ 162              		.code	16
+ 163              		.thumb_func
+ 164              		.type	main, %function
+ 165              	main:
+ 166              	.LFB35:
+  37:main.c        **** 
+  38:main.c        **** int main(void)
+  39:main.c        **** {
+ 167              		.loc 1 39 0
+ 168              		.cfi_startproc
+ 169              		@ Volatile: function does not return.
+ 170              		@ args = 0, pretend = 0, frame = 0
+ 171              		@ frame_needed = 0, uses_anonymous_args = 0
+ 172 0000 10B5     		push	{r4, lr}
+ 173              		.cfi_def_cfa_offset 8
+ 174              		.cfi_offset 4, -8
+ 175              		.cfi_offset 14, -4
+  40:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+ 176              		.loc 1 40 0
+ 177              		.syntax divided
+ 178              	@ 40 "main.c" 1
+ 179 0002 62B6     		CPSIE   i
+ 180              	@ 0 "" 2
+  41:main.c        **** 
+  42:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+  43:main.c        ****     LCD_Start();
+ 181              		.loc 1 43 0
+ 182              		.thumb
+ 183              		.syntax unified
+ 184 0004 FFF7FEFF 		bl	LCD_Start
+ 185              	.LVL6:
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 5
+
+
+  44:main.c        ****     Timer_Start();
+ 186              		.loc 1 44 0
+ 187 0008 FFF7FEFF 		bl	Timer_Start
+ 188              	.LVL7:
+  45:main.c        ****     isr_StartEx(ISR);
+ 189              		.loc 1 45 0
+ 190 000c 0148     		ldr	r0, .L10
+ 191 000e FFF7FEFF 		bl	isr_StartEx
+ 192              	.LVL8:
+ 193              	.L9:
+ 194 0012 FEE7     		b	.L9
+ 195              	.L11:
+ 196              		.align	2
+ 197              	.L10:
+ 198 0014 00000000 		.word	ISR
+ 199              		.cfi_endproc
+ 200              	.LFE35:
+ 201              		.size	main, .-main
+ 202              		.comm	lcd_string,16,4
+ 203              		.global	miliseconds
+ 204              		.global	hours
+ 205              		.comm	minutes,4,4
+ 206              		.comm	seconds,4,4
+ 207              		.comm	ms_count,4,4
+ 208              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 209              		.align	2
+ 210              	.LC2:
+ 211 0000 25303275 		.ascii	"%02u:%02u:%02u\000"
+ 211      3A253032 
+ 211      753A2530 
+ 211      327500
+ 212              		.bss
+ 213              		.align	2
+ 214              		.set	.LANCHOR0,. + 0
+ 215              		.type	miliseconds, %object
+ 216              		.size	miliseconds, 4
+ 217              	miliseconds:
+ 218 0000 00000000 		.space	4
+ 219              		.type	hours, %object
+ 220              		.size	hours, 4
+ 221              	hours:
+ 222 0004 00000000 		.space	4
+ 223              		.text
+ 224              	.Letext0:
+ 225              		.file 2 "Generated_Source\\PSoC4/LCD.h"
+ 226              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 227              		.file 4 "Generated_Source\\PSoC4/Timer.h"
+ 228              		.file 5 "Generated_Source\\PSoC4/isr.h"
+ 229              		.section	.debug_info,"",%progbits
+ 230              	.Ldebug_info0:
+ 231 0000 1A020000 		.4byte	0x21a
+ 232 0004 0400     		.2byte	0x4
+ 233 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 234 000a 04       		.byte	0x4
+ 235 000b 01       		.uleb128 0x1
+ 236 000c 19010000 		.4byte	.LASF27
+ 237 0010 0C       		.byte	0xc
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 6
+
+
+ 238 0011 D2010000 		.4byte	.LASF28
+ 239 0015 37000000 		.4byte	.LASF29
+ 240 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 241 001d 00000000 		.4byte	0
+ 242 0021 00000000 		.4byte	.Ldebug_line0
+ 243 0025 02       		.uleb128 0x2
+ 244 0026 01       		.byte	0x1
+ 245 0027 06       		.byte	0x6
+ 246 0028 06020000 		.4byte	.LASF0
+ 247 002c 02       		.uleb128 0x2
+ 248 002d 01       		.byte	0x1
+ 249 002e 08       		.byte	0x8
+ 250 002f 83000000 		.4byte	.LASF1
+ 251 0033 02       		.uleb128 0x2
+ 252 0034 02       		.byte	0x2
+ 253 0035 05       		.byte	0x5
+ 254 0036 E7010000 		.4byte	.LASF2
+ 255 003a 02       		.uleb128 0x2
+ 256 003b 02       		.byte	0x2
+ 257 003c 07       		.byte	0x7
+ 258 003d 24000000 		.4byte	.LASF3
+ 259 0041 02       		.uleb128 0x2
+ 260 0042 04       		.byte	0x4
+ 261 0043 05       		.byte	0x5
+ 262 0044 F1010000 		.4byte	.LASF4
+ 263 0048 02       		.uleb128 0x2
+ 264 0049 04       		.byte	0x4
+ 265 004a 07       		.byte	0x7
+ 266 004b 91000000 		.4byte	.LASF5
+ 267 004f 02       		.uleb128 0x2
+ 268 0050 08       		.byte	0x8
+ 269 0051 05       		.byte	0x5
+ 270 0052 BC010000 		.4byte	.LASF6
+ 271 0056 02       		.uleb128 0x2
+ 272 0057 08       		.byte	0x8
+ 273 0058 07       		.byte	0x7
+ 274 0059 F5000000 		.4byte	.LASF7
+ 275 005d 03       		.uleb128 0x3
+ 276 005e 04       		.byte	0x4
+ 277 005f 05       		.byte	0x5
+ 278 0060 696E7400 		.ascii	"int\000"
+ 279 0064 02       		.uleb128 0x2
+ 280 0065 04       		.byte	0x4
+ 281 0066 07       		.byte	0x7
+ 282 0067 E8000000 		.4byte	.LASF8
+ 283 006b 02       		.uleb128 0x2
+ 284 006c 04       		.byte	0x4
+ 285 006d 04       		.byte	0x4
+ 286 006e 73000000 		.4byte	.LASF9
+ 287 0072 02       		.uleb128 0x2
+ 288 0073 08       		.byte	0x8
+ 289 0074 04       		.byte	0x4
+ 290 0075 B4000000 		.4byte	.LASF10
+ 291 0079 02       		.uleb128 0x2
+ 292 007a 01       		.byte	0x1
+ 293 007b 08       		.byte	0x8
+ 294 007c D9010000 		.4byte	.LASF11
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 7
+
+
+ 295 0080 02       		.uleb128 0x2
+ 296 0081 08       		.byte	0x8
+ 297 0082 04       		.byte	0x4
+ 298 0083 FA010000 		.4byte	.LASF12
+ 299 0087 02       		.uleb128 0x2
+ 300 0088 04       		.byte	0x4
+ 301 0089 07       		.byte	0x7
+ 302 008a B3010000 		.4byte	.LASF13
+ 303 008e 04       		.uleb128 0x4
+ 304 008f 19000000 		.4byte	.LASF30
+ 305 0093 01       		.byte	0x1
+ 306 0094 07       		.byte	0x7
+ 307 0095 00000000 		.4byte	.LFB33
+ 308 0099 48000000 		.4byte	.LFE33-.LFB33
+ 309 009d 01       		.uleb128 0x1
+ 310 009e 9C       		.byte	0x9c
+ 311 009f FC000000 		.4byte	0xfc
+ 312 00a3 05       		.uleb128 0x5
+ 313 00a4 0A000000 		.4byte	.LVL0
+ 314 00a8 D0010000 		.4byte	0x1d0
+ 315 00ac B6000000 		.4byte	0xb6
+ 316 00b0 06       		.uleb128 0x6
+ 317 00b1 01       		.uleb128 0x1
+ 318 00b2 50       		.byte	0x50
+ 319 00b3 01       		.uleb128 0x1
+ 320 00b4 31       		.byte	0x31
+ 321 00b5 00       		.byte	0
+ 322 00b6 05       		.uleb128 0x5
+ 323 00b7 22000000 		.4byte	.LVL1
+ 324 00bb DB010000 		.4byte	0x1db
+ 325 00bf D3000000 		.4byte	0xd3
+ 326 00c3 06       		.uleb128 0x6
+ 327 00c4 01       		.uleb128 0x1
+ 328 00c5 50       		.byte	0x50
+ 329 00c6 02       		.uleb128 0x2
+ 330 00c7 74       		.byte	0x74
+ 331 00c8 00       		.sleb128 0
+ 332 00c9 06       		.uleb128 0x6
+ 333 00ca 01       		.uleb128 0x1
+ 334 00cb 51       		.byte	0x51
+ 335 00cc 05       		.uleb128 0x5
+ 336 00cd 03       		.byte	0x3
+ 337 00ce 00000000 		.4byte	.LC2
+ 338 00d2 00       		.byte	0
+ 339 00d3 05       		.uleb128 0x5
+ 340 00d4 2A000000 		.4byte	.LVL2
+ 341 00d8 E6010000 		.4byte	0x1e6
+ 342 00dc EB000000 		.4byte	0xeb
+ 343 00e0 06       		.uleb128 0x6
+ 344 00e1 01       		.uleb128 0x1
+ 345 00e2 50       		.byte	0x50
+ 346 00e3 01       		.uleb128 0x1
+ 347 00e4 30       		.byte	0x30
+ 348 00e5 06       		.uleb128 0x6
+ 349 00e6 01       		.uleb128 0x1
+ 350 00e7 51       		.byte	0x51
+ 351 00e8 01       		.uleb128 0x1
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 8
+
+
+ 352 00e9 30       		.byte	0x30
+ 353 00ea 00       		.byte	0
+ 354 00eb 07       		.uleb128 0x7
+ 355 00ec 30000000 		.4byte	.LVL3
+ 356 00f0 F1010000 		.4byte	0x1f1
+ 357 00f4 06       		.uleb128 0x6
+ 358 00f5 01       		.uleb128 0x1
+ 359 00f6 50       		.byte	0x50
+ 360 00f7 02       		.uleb128 0x2
+ 361 00f8 74       		.byte	0x74
+ 362 00f9 00       		.sleb128 0
+ 363 00fa 00       		.byte	0
+ 364 00fb 00       		.byte	0
+ 365 00fc 08       		.uleb128 0x8
+ 366 00fd 49535200 		.ascii	"ISR\000"
+ 367 0101 01       		.byte	0x1
+ 368 0102 10       		.byte	0x10
+ 369 0103 00000000 		.4byte	.LFB34
+ 370 0107 64000000 		.4byte	.LFE34-.LFB34
+ 371 010b 01       		.uleb128 0x1
+ 372 010c 9C       		.byte	0x9c
+ 373 010d 1B010000 		.4byte	0x11b
+ 374 0111 09       		.uleb128 0x9
+ 375 0112 4C000000 		.4byte	.LVL5
+ 376 0116 8E000000 		.4byte	0x8e
+ 377 011a 00       		.byte	0
+ 378 011b 0A       		.uleb128 0xa
+ 379 011c BB000000 		.4byte	.LASF31
+ 380 0120 01       		.byte	0x1
+ 381 0121 26       		.byte	0x26
+ 382 0122 5D000000 		.4byte	0x5d
+ 383 0126 00000000 		.4byte	.LFB35
+ 384 012a 18000000 		.4byte	.LFE35-.LFB35
+ 385 012e 01       		.uleb128 0x1
+ 386 012f 9C       		.byte	0x9c
+ 387 0130 5A010000 		.4byte	0x15a
+ 388 0134 09       		.uleb128 0x9
+ 389 0135 08000000 		.4byte	.LVL6
+ 390 0139 FC010000 		.4byte	0x1fc
+ 391 013d 09       		.uleb128 0x9
+ 392 013e 0C000000 		.4byte	.LVL7
+ 393 0142 07020000 		.4byte	0x207
+ 394 0146 07       		.uleb128 0x7
+ 395 0147 12000000 		.4byte	.LVL8
+ 396 014b 12020000 		.4byte	0x212
+ 397 014f 06       		.uleb128 0x6
+ 398 0150 01       		.uleb128 0x1
+ 399 0151 50       		.byte	0x50
+ 400 0152 05       		.uleb128 0x5
+ 401 0153 03       		.byte	0x3
+ 402 0154 00000000 		.4byte	ISR
+ 403 0158 00       		.byte	0
+ 404 0159 00       		.byte	0
+ 405 015a 0B       		.uleb128 0xb
+ 406 015b DE010000 		.4byte	.LASF14
+ 407 015f 01       		.byte	0x1
+ 408 0160 03       		.byte	0x3
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 9
+
+
+ 409 0161 5D000000 		.4byte	0x5d
+ 410 0165 05       		.uleb128 0x5
+ 411 0166 03       		.byte	0x3
+ 412 0167 00000000 		.4byte	ms_count
+ 413 016b 0B       		.uleb128 0xb
+ 414 016c CA010000 		.4byte	.LASF15
+ 415 0170 01       		.byte	0x1
+ 416 0171 03       		.byte	0x3
+ 417 0172 5D000000 		.4byte	0x5d
+ 418 0176 05       		.uleb128 0x5
+ 419 0177 03       		.byte	0x3
+ 420 0178 00000000 		.4byte	seconds
+ 421 017c 0B       		.uleb128 0xb
+ 422 017d 00000000 		.4byte	.LASF16
+ 423 0181 01       		.byte	0x1
+ 424 0182 03       		.byte	0x3
+ 425 0183 5D000000 		.4byte	0x5d
+ 426 0187 05       		.uleb128 0x5
+ 427 0188 03       		.byte	0x3
+ 428 0189 00000000 		.4byte	minutes
+ 429 018d 0B       		.uleb128 0xb
+ 430 018e AE000000 		.4byte	.LASF17
+ 431 0192 01       		.byte	0x1
+ 432 0193 03       		.byte	0x3
+ 433 0194 5D000000 		.4byte	0x5d
+ 434 0198 05       		.uleb128 0x5
+ 435 0199 03       		.byte	0x3
+ 436 019a 00000000 		.4byte	hours
+ 437 019e 0B       		.uleb128 0xb
+ 438 019f A7010000 		.4byte	.LASF18
+ 439 01a3 01       		.byte	0x1
+ 440 01a4 04       		.byte	0x4
+ 441 01a5 5D000000 		.4byte	0x5d
+ 442 01a9 05       		.uleb128 0x5
+ 443 01aa 03       		.byte	0x3
+ 444 01ab 00000000 		.4byte	miliseconds
+ 445 01af 0C       		.uleb128 0xc
+ 446 01b0 79000000 		.4byte	0x79
+ 447 01b4 BF010000 		.4byte	0x1bf
+ 448 01b8 0D       		.uleb128 0xd
+ 449 01b9 87000000 		.4byte	0x87
+ 450 01bd 0F       		.byte	0xf
+ 451 01be 00       		.byte	0
+ 452 01bf 0B       		.uleb128 0xb
+ 453 01c0 A3000000 		.4byte	.LASF19
+ 454 01c4 01       		.byte	0x1
+ 455 01c5 05       		.byte	0x5
+ 456 01c6 AF010000 		.4byte	0x1af
+ 457 01ca 05       		.uleb128 0x5
+ 458 01cb 03       		.byte	0x3
+ 459 01cc 00000000 		.4byte	lcd_string
+ 460 01d0 0E       		.uleb128 0xe
+ 461 01d1 08000000 		.4byte	.LASF20
+ 462 01d5 08000000 		.4byte	.LASF20
+ 463 01d9 02       		.byte	0x2
+ 464 01da 3A       		.byte	0x3a
+ 465 01db 0E       		.uleb128 0xe
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 10
+
+
+ 466 01dc 12020000 		.4byte	.LASF21
+ 467 01e0 12020000 		.4byte	.LASF21
+ 468 01e4 03       		.byte	0x3
+ 469 01e5 E7       		.byte	0xe7
+ 470 01e6 0E       		.uleb128 0xe
+ 471 01e7 0C010000 		.4byte	.LASF22
+ 472 01eb 0C010000 		.4byte	.LASF22
+ 473 01ef 02       		.byte	0x2
+ 474 01f0 3D       		.byte	0x3d
+ 475 01f1 0E       		.uleb128 0xe
+ 476 01f2 C0000000 		.4byte	.LASF23
+ 477 01f6 C0000000 		.4byte	.LASF23
+ 478 01fa 02       		.byte	0x2
+ 479 01fb 3C       		.byte	0x3c
+ 480 01fc 0E       		.uleb128 0xe
+ 481 01fd 79000000 		.4byte	.LASF24
+ 482 0201 79000000 		.4byte	.LASF24
+ 483 0205 02       		.byte	0x2
+ 484 0206 38       		.byte	0x38
+ 485 0207 0E       		.uleb128 0xe
+ 486 0208 DC000000 		.4byte	.LASF25
+ 487 020c DC000000 		.4byte	.LASF25
+ 488 0210 04       		.byte	0x4
+ 489 0211 5A       		.byte	0x5a
+ 490 0212 0E       		.uleb128 0xe
+ 491 0213 D0000000 		.4byte	.LASF26
+ 492 0217 D0000000 		.4byte	.LASF26
+ 493 021b 05       		.byte	0x5
+ 494 021c 18       		.byte	0x18
+ 495 021d 00       		.byte	0
+ 496              		.section	.debug_abbrev,"",%progbits
+ 497              	.Ldebug_abbrev0:
+ 498 0000 01       		.uleb128 0x1
+ 499 0001 11       		.uleb128 0x11
+ 500 0002 01       		.byte	0x1
+ 501 0003 25       		.uleb128 0x25
+ 502 0004 0E       		.uleb128 0xe
+ 503 0005 13       		.uleb128 0x13
+ 504 0006 0B       		.uleb128 0xb
+ 505 0007 03       		.uleb128 0x3
+ 506 0008 0E       		.uleb128 0xe
+ 507 0009 1B       		.uleb128 0x1b
+ 508 000a 0E       		.uleb128 0xe
+ 509 000b 55       		.uleb128 0x55
+ 510 000c 17       		.uleb128 0x17
+ 511 000d 11       		.uleb128 0x11
+ 512 000e 01       		.uleb128 0x1
+ 513 000f 10       		.uleb128 0x10
+ 514 0010 17       		.uleb128 0x17
+ 515 0011 00       		.byte	0
+ 516 0012 00       		.byte	0
+ 517 0013 02       		.uleb128 0x2
+ 518 0014 24       		.uleb128 0x24
+ 519 0015 00       		.byte	0
+ 520 0016 0B       		.uleb128 0xb
+ 521 0017 0B       		.uleb128 0xb
+ 522 0018 3E       		.uleb128 0x3e
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 11
+
+
+ 523 0019 0B       		.uleb128 0xb
+ 524 001a 03       		.uleb128 0x3
+ 525 001b 0E       		.uleb128 0xe
+ 526 001c 00       		.byte	0
+ 527 001d 00       		.byte	0
+ 528 001e 03       		.uleb128 0x3
+ 529 001f 24       		.uleb128 0x24
+ 530 0020 00       		.byte	0
+ 531 0021 0B       		.uleb128 0xb
+ 532 0022 0B       		.uleb128 0xb
+ 533 0023 3E       		.uleb128 0x3e
+ 534 0024 0B       		.uleb128 0xb
+ 535 0025 03       		.uleb128 0x3
+ 536 0026 08       		.uleb128 0x8
+ 537 0027 00       		.byte	0
+ 538 0028 00       		.byte	0
+ 539 0029 04       		.uleb128 0x4
+ 540 002a 2E       		.uleb128 0x2e
+ 541 002b 01       		.byte	0x1
+ 542 002c 3F       		.uleb128 0x3f
+ 543 002d 19       		.uleb128 0x19
+ 544 002e 03       		.uleb128 0x3
+ 545 002f 0E       		.uleb128 0xe
+ 546 0030 3A       		.uleb128 0x3a
+ 547 0031 0B       		.uleb128 0xb
+ 548 0032 3B       		.uleb128 0x3b
+ 549 0033 0B       		.uleb128 0xb
+ 550 0034 11       		.uleb128 0x11
+ 551 0035 01       		.uleb128 0x1
+ 552 0036 12       		.uleb128 0x12
+ 553 0037 06       		.uleb128 0x6
+ 554 0038 40       		.uleb128 0x40
+ 555 0039 18       		.uleb128 0x18
+ 556 003a 9742     		.uleb128 0x2117
+ 557 003c 19       		.uleb128 0x19
+ 558 003d 01       		.uleb128 0x1
+ 559 003e 13       		.uleb128 0x13
+ 560 003f 00       		.byte	0
+ 561 0040 00       		.byte	0
+ 562 0041 05       		.uleb128 0x5
+ 563 0042 898201   		.uleb128 0x4109
+ 564 0045 01       		.byte	0x1
+ 565 0046 11       		.uleb128 0x11
+ 566 0047 01       		.uleb128 0x1
+ 567 0048 31       		.uleb128 0x31
+ 568 0049 13       		.uleb128 0x13
+ 569 004a 01       		.uleb128 0x1
+ 570 004b 13       		.uleb128 0x13
+ 571 004c 00       		.byte	0
+ 572 004d 00       		.byte	0
+ 573 004e 06       		.uleb128 0x6
+ 574 004f 8A8201   		.uleb128 0x410a
+ 575 0052 00       		.byte	0
+ 576 0053 02       		.uleb128 0x2
+ 577 0054 18       		.uleb128 0x18
+ 578 0055 9142     		.uleb128 0x2111
+ 579 0057 18       		.uleb128 0x18
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 12
+
+
+ 580 0058 00       		.byte	0
+ 581 0059 00       		.byte	0
+ 582 005a 07       		.uleb128 0x7
+ 583 005b 898201   		.uleb128 0x4109
+ 584 005e 01       		.byte	0x1
+ 585 005f 11       		.uleb128 0x11
+ 586 0060 01       		.uleb128 0x1
+ 587 0061 31       		.uleb128 0x31
+ 588 0062 13       		.uleb128 0x13
+ 589 0063 00       		.byte	0
+ 590 0064 00       		.byte	0
+ 591 0065 08       		.uleb128 0x8
+ 592 0066 2E       		.uleb128 0x2e
+ 593 0067 01       		.byte	0x1
+ 594 0068 3F       		.uleb128 0x3f
+ 595 0069 19       		.uleb128 0x19
+ 596 006a 03       		.uleb128 0x3
+ 597 006b 08       		.uleb128 0x8
+ 598 006c 3A       		.uleb128 0x3a
+ 599 006d 0B       		.uleb128 0xb
+ 600 006e 3B       		.uleb128 0x3b
+ 601 006f 0B       		.uleb128 0xb
+ 602 0070 27       		.uleb128 0x27
+ 603 0071 19       		.uleb128 0x19
+ 604 0072 11       		.uleb128 0x11
+ 605 0073 01       		.uleb128 0x1
+ 606 0074 12       		.uleb128 0x12
+ 607 0075 06       		.uleb128 0x6
+ 608 0076 40       		.uleb128 0x40
+ 609 0077 18       		.uleb128 0x18
+ 610 0078 9642     		.uleb128 0x2116
+ 611 007a 19       		.uleb128 0x19
+ 612 007b 01       		.uleb128 0x1
+ 613 007c 13       		.uleb128 0x13
+ 614 007d 00       		.byte	0
+ 615 007e 00       		.byte	0
+ 616 007f 09       		.uleb128 0x9
+ 617 0080 898201   		.uleb128 0x4109
+ 618 0083 00       		.byte	0
+ 619 0084 11       		.uleb128 0x11
+ 620 0085 01       		.uleb128 0x1
+ 621 0086 31       		.uleb128 0x31
+ 622 0087 13       		.uleb128 0x13
+ 623 0088 00       		.byte	0
+ 624 0089 00       		.byte	0
+ 625 008a 0A       		.uleb128 0xa
+ 626 008b 2E       		.uleb128 0x2e
+ 627 008c 01       		.byte	0x1
+ 628 008d 3F       		.uleb128 0x3f
+ 629 008e 19       		.uleb128 0x19
+ 630 008f 03       		.uleb128 0x3
+ 631 0090 0E       		.uleb128 0xe
+ 632 0091 3A       		.uleb128 0x3a
+ 633 0092 0B       		.uleb128 0xb
+ 634 0093 3B       		.uleb128 0x3b
+ 635 0094 0B       		.uleb128 0xb
+ 636 0095 27       		.uleb128 0x27
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 13
+
+
+ 637 0096 19       		.uleb128 0x19
+ 638 0097 49       		.uleb128 0x49
+ 639 0098 13       		.uleb128 0x13
+ 640 0099 8701     		.uleb128 0x87
+ 641 009b 19       		.uleb128 0x19
+ 642 009c 11       		.uleb128 0x11
+ 643 009d 01       		.uleb128 0x1
+ 644 009e 12       		.uleb128 0x12
+ 645 009f 06       		.uleb128 0x6
+ 646 00a0 40       		.uleb128 0x40
+ 647 00a1 18       		.uleb128 0x18
+ 648 00a2 9742     		.uleb128 0x2117
+ 649 00a4 19       		.uleb128 0x19
+ 650 00a5 01       		.uleb128 0x1
+ 651 00a6 13       		.uleb128 0x13
+ 652 00a7 00       		.byte	0
+ 653 00a8 00       		.byte	0
+ 654 00a9 0B       		.uleb128 0xb
+ 655 00aa 34       		.uleb128 0x34
+ 656 00ab 00       		.byte	0
+ 657 00ac 03       		.uleb128 0x3
+ 658 00ad 0E       		.uleb128 0xe
+ 659 00ae 3A       		.uleb128 0x3a
+ 660 00af 0B       		.uleb128 0xb
+ 661 00b0 3B       		.uleb128 0x3b
+ 662 00b1 0B       		.uleb128 0xb
+ 663 00b2 49       		.uleb128 0x49
+ 664 00b3 13       		.uleb128 0x13
+ 665 00b4 3F       		.uleb128 0x3f
+ 666 00b5 19       		.uleb128 0x19
+ 667 00b6 02       		.uleb128 0x2
+ 668 00b7 18       		.uleb128 0x18
+ 669 00b8 00       		.byte	0
+ 670 00b9 00       		.byte	0
+ 671 00ba 0C       		.uleb128 0xc
+ 672 00bb 01       		.uleb128 0x1
+ 673 00bc 01       		.byte	0x1
+ 674 00bd 49       		.uleb128 0x49
+ 675 00be 13       		.uleb128 0x13
+ 676 00bf 01       		.uleb128 0x1
+ 677 00c0 13       		.uleb128 0x13
+ 678 00c1 00       		.byte	0
+ 679 00c2 00       		.byte	0
+ 680 00c3 0D       		.uleb128 0xd
+ 681 00c4 21       		.uleb128 0x21
+ 682 00c5 00       		.byte	0
+ 683 00c6 49       		.uleb128 0x49
+ 684 00c7 13       		.uleb128 0x13
+ 685 00c8 2F       		.uleb128 0x2f
+ 686 00c9 0B       		.uleb128 0xb
+ 687 00ca 00       		.byte	0
+ 688 00cb 00       		.byte	0
+ 689 00cc 0E       		.uleb128 0xe
+ 690 00cd 2E       		.uleb128 0x2e
+ 691 00ce 00       		.byte	0
+ 692 00cf 3F       		.uleb128 0x3f
+ 693 00d0 19       		.uleb128 0x19
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 14
+
+
+ 694 00d1 3C       		.uleb128 0x3c
+ 695 00d2 19       		.uleb128 0x19
+ 696 00d3 6E       		.uleb128 0x6e
+ 697 00d4 0E       		.uleb128 0xe
+ 698 00d5 03       		.uleb128 0x3
+ 699 00d6 0E       		.uleb128 0xe
+ 700 00d7 3A       		.uleb128 0x3a
+ 701 00d8 0B       		.uleb128 0xb
+ 702 00d9 3B       		.uleb128 0x3b
+ 703 00da 0B       		.uleb128 0xb
+ 704 00db 00       		.byte	0
+ 705 00dc 00       		.byte	0
+ 706 00dd 00       		.byte	0
+ 707              		.section	.debug_aranges,"",%progbits
+ 708 0000 2C000000 		.4byte	0x2c
+ 709 0004 0200     		.2byte	0x2
+ 710 0006 00000000 		.4byte	.Ldebug_info0
+ 711 000a 04       		.byte	0x4
+ 712 000b 00       		.byte	0
+ 713 000c 0000     		.2byte	0
+ 714 000e 0000     		.2byte	0
+ 715 0010 00000000 		.4byte	.LFB33
+ 716 0014 48000000 		.4byte	.LFE33-.LFB33
+ 717 0018 00000000 		.4byte	.LFB34
+ 718 001c 64000000 		.4byte	.LFE34-.LFB34
+ 719 0020 00000000 		.4byte	.LFB35
+ 720 0024 18000000 		.4byte	.LFE35-.LFB35
+ 721 0028 00000000 		.4byte	0
+ 722 002c 00000000 		.4byte	0
+ 723              		.section	.debug_ranges,"",%progbits
+ 724              	.Ldebug_ranges0:
+ 725 0000 00000000 		.4byte	.LFB33
+ 726 0004 48000000 		.4byte	.LFE33
+ 727 0008 00000000 		.4byte	.LFB34
+ 728 000c 64000000 		.4byte	.LFE34
+ 729 0010 00000000 		.4byte	.LFB35
+ 730 0014 18000000 		.4byte	.LFE35
+ 731 0018 00000000 		.4byte	0
+ 732 001c 00000000 		.4byte	0
+ 733              		.section	.debug_line,"",%progbits
+ 734              	.Ldebug_line0:
+ 735 0000 0A010000 		.section	.debug_str,"MS",%progbits,1
+ 735      0200C400 
+ 735      00000201 
+ 735      FB0E0D00 
+ 735      01010101 
+ 736              	.LASF16:
+ 737 0000 6D696E75 		.ascii	"minutes\000"
+ 737      74657300 
+ 738              	.LASF20:
+ 739 0008 4C43445F 		.ascii	"LCD_WriteControl\000"
+ 739      57726974 
+ 739      65436F6E 
+ 739      74726F6C 
+ 739      00
+ 740              	.LASF30:
+ 741 0019 75706461 		.ascii	"update_lcd\000"
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 15
+
+
+ 741      74655F6C 
+ 741      636400
+ 742              	.LASF3:
+ 743 0024 73686F72 		.ascii	"short unsigned int\000"
+ 743      7420756E 
+ 743      7369676E 
+ 743      65642069 
+ 743      6E7400
+ 744              	.LASF29:
+ 745 0037 433A5C55 		.ascii	"C:\\Users\\oggih\\OneDrive\\Documents\\PSoC Creator"
+ 745      73657273 
+ 745      5C6F6767 
+ 745      69685C4F 
+ 745      6E654472 
+ 746 0065 5C4C525C 		.ascii	"\\LR\\LR3.cydsn\000"
+ 746      4C52332E 
+ 746      63796473 
+ 746      6E00
+ 747              	.LASF9:
+ 748 0073 666C6F61 		.ascii	"float\000"
+ 748      7400
+ 749              	.LASF24:
+ 750 0079 4C43445F 		.ascii	"LCD_Start\000"
+ 750      53746172 
+ 750      7400
+ 751              	.LASF1:
+ 752 0083 756E7369 		.ascii	"unsigned char\000"
+ 752      676E6564 
+ 752      20636861 
+ 752      7200
+ 753              	.LASF5:
+ 754 0091 6C6F6E67 		.ascii	"long unsigned int\000"
+ 754      20756E73 
+ 754      69676E65 
+ 754      6420696E 
+ 754      7400
+ 755              	.LASF19:
+ 756 00a3 6C63645F 		.ascii	"lcd_string\000"
+ 756      73747269 
+ 756      6E6700
+ 757              	.LASF17:
+ 758 00ae 686F7572 		.ascii	"hours\000"
+ 758      7300
+ 759              	.LASF10:
+ 760 00b4 646F7562 		.ascii	"double\000"
+ 760      6C6500
+ 761              	.LASF31:
+ 762 00bb 6D61696E 		.ascii	"main\000"
+ 762      00
+ 763              	.LASF23:
+ 764 00c0 4C43445F 		.ascii	"LCD_PrintString\000"
+ 764      5072696E 
+ 764      74537472 
+ 764      696E6700 
+ 765              	.LASF26:
+ 766 00d0 6973725F 		.ascii	"isr_StartEx\000"
+ 766      53746172 
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 16
+
+
+ 766      74457800 
+ 767              	.LASF25:
+ 768 00dc 54696D65 		.ascii	"Timer_Start\000"
+ 768      725F5374 
+ 768      61727400 
+ 769              	.LASF8:
+ 770 00e8 756E7369 		.ascii	"unsigned int\000"
+ 770      676E6564 
+ 770      20696E74 
+ 770      00
+ 771              	.LASF7:
+ 772 00f5 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 772      206C6F6E 
+ 772      6720756E 
+ 772      7369676E 
+ 772      65642069 
+ 773              	.LASF22:
+ 774 010c 4C43445F 		.ascii	"LCD_Position\000"
+ 774      506F7369 
+ 774      74696F6E 
+ 774      00
+ 775              	.LASF27:
+ 776 0119 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 776      43313120 
+ 776      352E342E 
+ 776      31203230 
+ 776      31363036 
+ 777 014c 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 777      20726576 
+ 777      6973696F 
+ 777      6E203233 
+ 777      37373135 
+ 778 017f 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 778      66756E63 
+ 778      74696F6E 
+ 778      2D736563 
+ 778      74696F6E 
+ 779              	.LASF18:
+ 780 01a7 6D696C69 		.ascii	"miliseconds\000"
+ 780      7365636F 
+ 780      6E647300 
+ 781              	.LASF13:
+ 782 01b3 73697A65 		.ascii	"sizetype\000"
+ 782      74797065 
+ 782      00
+ 783              	.LASF6:
+ 784 01bc 6C6F6E67 		.ascii	"long long int\000"
+ 784      206C6F6E 
+ 784      6720696E 
+ 784      7400
+ 785              	.LASF15:
+ 786 01ca 7365636F 		.ascii	"seconds\000"
+ 786      6E647300 
+ 787              	.LASF28:
+ 788 01d2 6D61696E 		.ascii	"main.c\000"
+ 788      2E6300
+ 789              	.LASF11:
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\ccHW8X5v.s 			page 17
+
+
+ 790 01d9 63686172 		.ascii	"char\000"
+ 790      00
+ 791              	.LASF14:
+ 792 01de 6D735F63 		.ascii	"ms_count\000"
+ 792      6F756E74 
+ 792      00
+ 793              	.LASF2:
+ 794 01e7 73686F72 		.ascii	"short int\000"
+ 794      7420696E 
+ 794      7400
+ 795              	.LASF4:
+ 796 01f1 6C6F6E67 		.ascii	"long int\000"
+ 796      20696E74 
+ 796      00
+ 797              	.LASF12:
+ 798 01fa 6C6F6E67 		.ascii	"long double\000"
+ 798      20646F75 
+ 798      626C6500 
+ 799              	.LASF0:
+ 800 0206 7369676E 		.ascii	"signed char\000"
+ 800      65642063 
+ 800      68617200 
+ 801              	.LASF21:
+ 802 0212 73707269 		.ascii	"sprintf\000"
+ 802      6E746600 
+ 803              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -1,0 +1,651 @@
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cczrT9pg.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.main,"ax",%progbits
+  20              		.align	2
+  21              		.global	main
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	main, %function
+  25              	main:
+  26              	.LFB32:
+  27              		.file 1 "main.c"
+   1:main.c        **** /* ========================================
+   2:main.c        ****  *
+   3:main.c        ****  * Copyright YOUR COMPANY, THE YEAR
+   4:main.c        ****  * All Rights Reserved
+   5:main.c        ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:main.c        ****  *
+   7:main.c        ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:main.c        ****  * WHICH IS THE PROPERTY OF your company.
+   9:main.c        ****  *
+  10:main.c        ****  * ========================================
+  11:main.c        **** */
+  12:main.c        **** #include "project.h"
+  13:main.c        **** 
+  14:main.c        **** uint8_t i=0;
+  15:main.c        **** 
+  16:main.c        **** int main(void)
+  17:main.c        **** {
+  28              		.loc 1 17 0
+  29              		.cfi_startproc
+  30              		@ Volatile: function does not return.
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 10B5     		push	{r4, lr}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 4, -8
+  36              		.cfi_offset 14, -4
+  18:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+  37              		.loc 1 18 0
+  38              		.syntax divided
+  39              	@ 18 "main.c" 1
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cczrT9pg.s 			page 2
+
+
+  40 0002 62B6     		CPSIE   i
+  41              	@ 0 "" 2
+  19:main.c        **** 
+  20:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+  21:main.c        ****     PWM_Start();
+  42              		.loc 1 21 0
+  43              		.thumb
+  44              		.syntax unified
+  45 0004 FFF7FEFF 		bl	PWM_Start
+  46              	.LVL0:
+  22:main.c        ****     LFClk_Start();
+  47              		.loc 1 22 0
+  48 0008 FFF7FEFF 		bl	LFClk_Start
+  49              	.LVL1:
+  50              	.L6:
+  23:main.c        ****     
+  24:main.c        ****     for(;;)
+  25:main.c        ****     {
+  26:main.c        ****         /* Place your application code here. */
+  27:main.c        ****         for(i=0;i<255;i++)
+  51              		.loc 1 27 0
+  52 000c 0022     		movs	r2, #0
+  53 000e 124B     		ldr	r3, .L7
+  54 0010 1A70     		strb	r2, [r3]
+  55 0012 08E0     		b	.L2
+  56              	.L3:
+  28:main.c        ****         {
+  29:main.c        ****             PWM_WriteCompare(i);
+  57              		.loc 1 29 0 discriminator 3
+  58 0014 FFF7FEFF 		bl	PWM_WriteCompare
+  59              	.LVL2:
+  30:main.c        ****             CyDelay(8);
+  60              		.loc 1 30 0 discriminator 3
+  61 0018 0820     		movs	r0, #8
+  62 001a FFF7FEFF 		bl	CyDelay
+  63              	.LVL3:
+  27:main.c        ****         {
+  64              		.loc 1 27 0 discriminator 3
+  65 001e 0E4A     		ldr	r2, .L7
+  66 0020 1378     		ldrb	r3, [r2]
+  67 0022 0133     		adds	r3, r3, #1
+  68 0024 1370     		strb	r3, [r2]
+  69              	.L2:
+  27:main.c        ****         {
+  70              		.loc 1 27 0 is_stmt 0 discriminator 1
+  71 0026 0C4B     		ldr	r3, .L7
+  72 0028 1878     		ldrb	r0, [r3]
+  73 002a FF28     		cmp	r0, #255
+  74 002c F2D1     		bne	.L3
+  31:main.c        ****         }
+  32:main.c        ****         for(i=255;i>0;i--)
+  75              		.loc 1 32 0 is_stmt 1
+  76 002e FF22     		movs	r2, #255
+  77 0030 1A70     		strb	r2, [r3]
+  78 0032 08E0     		b	.L4
+  79              	.L5:
+  33:main.c        ****         {
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cczrT9pg.s 			page 3
+
+
+  34:main.c        ****             PWM_WriteCompare(i);
+  80              		.loc 1 34 0 discriminator 3
+  81 0034 FFF7FEFF 		bl	PWM_WriteCompare
+  82              	.LVL4:
+  35:main.c        ****             CyDelay(23);
+  83              		.loc 1 35 0 discriminator 3
+  84 0038 1720     		movs	r0, #23
+  85 003a FFF7FEFF 		bl	CyDelay
+  86              	.LVL5:
+  32:main.c        ****         {
+  87              		.loc 1 32 0 discriminator 3
+  88 003e 064A     		ldr	r2, .L7
+  89 0040 1378     		ldrb	r3, [r2]
+  90 0042 013B     		subs	r3, r3, #1
+  91 0044 1370     		strb	r3, [r2]
+  92              	.L4:
+  32:main.c        ****         {
+  93              		.loc 1 32 0 is_stmt 0 discriminator 1
+  94 0046 044B     		ldr	r3, .L7
+  95 0048 1878     		ldrb	r0, [r3]
+  96 004a 0028     		cmp	r0, #0
+  97 004c F2D1     		bne	.L5
+  36:main.c        ****         }
+  37:main.c        ****         CyDelay(20);
+  98              		.loc 1 37 0 is_stmt 1
+  99 004e 1430     		adds	r0, r0, #20
+ 100 0050 FFF7FEFF 		bl	CyDelay
+ 101              	.LVL6:
+  38:main.c        ****     }
+ 102              		.loc 1 38 0
+ 103 0054 DAE7     		b	.L6
+ 104              	.L8:
+ 105 0056 C046     		.align	2
+ 106              	.L7:
+ 107 0058 00000000 		.word	.LANCHOR0
+ 108              		.cfi_endproc
+ 109              	.LFE32:
+ 110              		.size	main, .-main
+ 111              		.global	i
+ 112              		.bss
+ 113              		.set	.LANCHOR0,. + 0
+ 114              		.type	i, %object
+ 115              		.size	i, 1
+ 116              	i:
+ 117 0000 00       		.space	1
+ 118              		.text
+ 119              	.Letext0:
+ 120              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 121              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 122              		.file 4 "Generated_Source\\PSoC4/PWM.h"
+ 123              		.file 5 "Generated_Source\\PSoC4/LFClk.h"
+ 124              		.file 6 "Generated_Source\\PSoC4/CyLib.h"
+ 125              		.section	.debug_info,"",%progbits
+ 126              	.Ldebug_info0:
+ 127 0000 49010000 		.4byte	0x149
+ 128 0004 0400     		.2byte	0x4
+ 129 0006 00000000 		.4byte	.Ldebug_abbrev0
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cczrT9pg.s 			page 4
+
+
+ 130 000a 04       		.byte	0x4
+ 131 000b 01       		.uleb128 0x1
+ 132 000c E5000000 		.4byte	.LASF20
+ 133 0010 0C       		.byte	0xc
+ 134 0011 1B000000 		.4byte	.LASF21
+ 135 0015 A9000000 		.4byte	.LASF22
+ 136 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 137 001d 00000000 		.4byte	0
+ 138 0021 00000000 		.4byte	.Ldebug_line0
+ 139 0025 02       		.uleb128 0x2
+ 140 0026 01       		.byte	0x1
+ 141 0027 06       		.byte	0x6
+ 142 0028 86010000 		.4byte	.LASF0
+ 143 002c 03       		.uleb128 0x3
+ 144 002d 58000000 		.4byte	.LASF9
+ 145 0031 02       		.byte	0x2
+ 146 0032 1D       		.byte	0x1d
+ 147 0033 37000000 		.4byte	0x37
+ 148 0037 02       		.uleb128 0x2
+ 149 0038 01       		.byte	0x1
+ 150 0039 08       		.byte	0x8
+ 151 003a 86000000 		.4byte	.LASF1
+ 152 003e 02       		.uleb128 0x2
+ 153 003f 02       		.byte	0x2
+ 154 0040 05       		.byte	0x5
+ 155 0041 9E010000 		.4byte	.LASF2
+ 156 0045 02       		.uleb128 0x2
+ 157 0046 02       		.byte	0x2
+ 158 0047 07       		.byte	0x7
+ 159 0048 73010000 		.4byte	.LASF3
+ 160 004c 02       		.uleb128 0x2
+ 161 004d 04       		.byte	0x4
+ 162 004e 05       		.byte	0x5
+ 163 004f 99000000 		.4byte	.LASF4
+ 164 0053 02       		.uleb128 0x2
+ 165 0054 04       		.byte	0x4
+ 166 0055 07       		.byte	0x7
+ 167 0056 2F000000 		.4byte	.LASF5
+ 168 005a 02       		.uleb128 0x2
+ 169 005b 08       		.byte	0x8
+ 170 005c 05       		.byte	0x5
+ 171 005d 00000000 		.4byte	.LASF6
+ 172 0061 02       		.uleb128 0x2
+ 173 0062 08       		.byte	0x8
+ 174 0063 07       		.byte	0x7
+ 175 0064 41000000 		.4byte	.LASF7
+ 176 0068 04       		.uleb128 0x4
+ 177 0069 04       		.byte	0x4
+ 178 006a 05       		.byte	0x5
+ 179 006b 696E7400 		.ascii	"int\000"
+ 180 006f 02       		.uleb128 0x2
+ 181 0070 04       		.byte	0x4
+ 182 0071 07       		.byte	0x7
+ 183 0072 0E000000 		.4byte	.LASF8
+ 184 0076 03       		.uleb128 0x3
+ 185 0077 7E000000 		.4byte	.LASF10
+ 186 007b 03       		.byte	0x3
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cczrT9pg.s 			page 5
+
+
+ 187 007c 18       		.byte	0x18
+ 188 007d 2C000000 		.4byte	0x2c
+ 189 0081 02       		.uleb128 0x2
+ 190 0082 04       		.byte	0x4
+ 191 0083 04       		.byte	0x4
+ 192 0084 62000000 		.4byte	.LASF11
+ 193 0088 02       		.uleb128 0x2
+ 194 0089 08       		.byte	0x8
+ 195 008a 04       		.byte	0x4
+ 196 008b A2000000 		.4byte	.LASF12
+ 197 008f 02       		.uleb128 0x2
+ 198 0090 01       		.byte	0x1
+ 199 0091 08       		.byte	0x8
+ 200 0092 94000000 		.4byte	.LASF13
+ 201 0096 02       		.uleb128 0x2
+ 202 0097 08       		.byte	0x8
+ 203 0098 04       		.byte	0x4
+ 204 0099 92010000 		.4byte	.LASF14
+ 205 009d 02       		.uleb128 0x2
+ 206 009e 04       		.byte	0x4
+ 207 009f 07       		.byte	0x7
+ 208 00a0 B9010000 		.4byte	.LASF15
+ 209 00a4 05       		.uleb128 0x5
+ 210 00a5 22000000 		.4byte	.LASF23
+ 211 00a9 01       		.byte	0x1
+ 212 00aa 10       		.byte	0x10
+ 213 00ab 68000000 		.4byte	0x68
+ 214 00af 00000000 		.4byte	.LFB32
+ 215 00b3 5C000000 		.4byte	.LFE32-.LFB32
+ 216 00b7 01       		.uleb128 0x1
+ 217 00b8 9C       		.byte	0x9c
+ 218 00b9 11010000 		.4byte	0x111
+ 219 00bd 06       		.uleb128 0x6
+ 220 00be 08000000 		.4byte	.LVL0
+ 221 00c2 20010000 		.4byte	0x120
+ 222 00c6 06       		.uleb128 0x6
+ 223 00c7 0C000000 		.4byte	.LVL1
+ 224 00cb 2B010000 		.4byte	0x12b
+ 225 00cf 06       		.uleb128 0x6
+ 226 00d0 18000000 		.4byte	.LVL2
+ 227 00d4 36010000 		.4byte	0x136
+ 228 00d8 07       		.uleb128 0x7
+ 229 00d9 1E000000 		.4byte	.LVL3
+ 230 00dd 41010000 		.4byte	0x141
+ 231 00e1 EB000000 		.4byte	0xeb
+ 232 00e5 08       		.uleb128 0x8
+ 233 00e6 01       		.uleb128 0x1
+ 234 00e7 50       		.byte	0x50
+ 235 00e8 01       		.uleb128 0x1
+ 236 00e9 38       		.byte	0x38
+ 237 00ea 00       		.byte	0
+ 238 00eb 06       		.uleb128 0x6
+ 239 00ec 38000000 		.4byte	.LVL4
+ 240 00f0 36010000 		.4byte	0x136
+ 241 00f4 07       		.uleb128 0x7
+ 242 00f5 3E000000 		.4byte	.LVL5
+ 243 00f9 41010000 		.4byte	0x141
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cczrT9pg.s 			page 6
+
+
+ 244 00fd 07010000 		.4byte	0x107
+ 245 0101 08       		.uleb128 0x8
+ 246 0102 01       		.uleb128 0x1
+ 247 0103 50       		.byte	0x50
+ 248 0104 01       		.uleb128 0x1
+ 249 0105 47       		.byte	0x47
+ 250 0106 00       		.byte	0
+ 251 0107 06       		.uleb128 0x6
+ 252 0108 54000000 		.4byte	.LVL6
+ 253 010c 41010000 		.4byte	0x141
+ 254 0110 00       		.byte	0
+ 255 0111 09       		.uleb128 0x9
+ 256 0112 6900     		.ascii	"i\000"
+ 257 0114 01       		.byte	0x1
+ 258 0115 0E       		.byte	0xe
+ 259 0116 76000000 		.4byte	0x76
+ 260 011a 05       		.uleb128 0x5
+ 261 011b 03       		.byte	0x3
+ 262 011c 00000000 		.4byte	i
+ 263 0120 0A       		.uleb128 0xa
+ 264 0121 74000000 		.4byte	.LASF16
+ 265 0125 74000000 		.4byte	.LASF16
+ 266 0129 04       		.byte	0x4
+ 267 012a 92       		.byte	0x92
+ 268 012b 0A       		.uleb128 0xa
+ 269 012c 68000000 		.4byte	.LASF17
+ 270 0130 68000000 		.4byte	.LASF17
+ 271 0134 05       		.byte	0x5
+ 272 0135 23       		.byte	0x23
+ 273 0136 0A       		.uleb128 0xa
+ 274 0137 A8010000 		.4byte	.LASF18
+ 275 013b A8010000 		.4byte	.LASF18
+ 276 013f 04       		.byte	0x4
+ 277 0140 C3       		.byte	0xc3
+ 278 0141 0A       		.uleb128 0xa
+ 279 0142 27000000 		.4byte	.LASF19
+ 280 0146 27000000 		.4byte	.LASF19
+ 281 014a 06       		.byte	0x6
+ 282 014b EC       		.byte	0xec
+ 283 014c 00       		.byte	0
+ 284              		.section	.debug_abbrev,"",%progbits
+ 285              	.Ldebug_abbrev0:
+ 286 0000 01       		.uleb128 0x1
+ 287 0001 11       		.uleb128 0x11
+ 288 0002 01       		.byte	0x1
+ 289 0003 25       		.uleb128 0x25
+ 290 0004 0E       		.uleb128 0xe
+ 291 0005 13       		.uleb128 0x13
+ 292 0006 0B       		.uleb128 0xb
+ 293 0007 03       		.uleb128 0x3
+ 294 0008 0E       		.uleb128 0xe
+ 295 0009 1B       		.uleb128 0x1b
+ 296 000a 0E       		.uleb128 0xe
+ 297 000b 55       		.uleb128 0x55
+ 298 000c 17       		.uleb128 0x17
+ 299 000d 11       		.uleb128 0x11
+ 300 000e 01       		.uleb128 0x1
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cczrT9pg.s 			page 7
+
+
+ 301 000f 10       		.uleb128 0x10
+ 302 0010 17       		.uleb128 0x17
+ 303 0011 00       		.byte	0
+ 304 0012 00       		.byte	0
+ 305 0013 02       		.uleb128 0x2
+ 306 0014 24       		.uleb128 0x24
+ 307 0015 00       		.byte	0
+ 308 0016 0B       		.uleb128 0xb
+ 309 0017 0B       		.uleb128 0xb
+ 310 0018 3E       		.uleb128 0x3e
+ 311 0019 0B       		.uleb128 0xb
+ 312 001a 03       		.uleb128 0x3
+ 313 001b 0E       		.uleb128 0xe
+ 314 001c 00       		.byte	0
+ 315 001d 00       		.byte	0
+ 316 001e 03       		.uleb128 0x3
+ 317 001f 16       		.uleb128 0x16
+ 318 0020 00       		.byte	0
+ 319 0021 03       		.uleb128 0x3
+ 320 0022 0E       		.uleb128 0xe
+ 321 0023 3A       		.uleb128 0x3a
+ 322 0024 0B       		.uleb128 0xb
+ 323 0025 3B       		.uleb128 0x3b
+ 324 0026 0B       		.uleb128 0xb
+ 325 0027 49       		.uleb128 0x49
+ 326 0028 13       		.uleb128 0x13
+ 327 0029 00       		.byte	0
+ 328 002a 00       		.byte	0
+ 329 002b 04       		.uleb128 0x4
+ 330 002c 24       		.uleb128 0x24
+ 331 002d 00       		.byte	0
+ 332 002e 0B       		.uleb128 0xb
+ 333 002f 0B       		.uleb128 0xb
+ 334 0030 3E       		.uleb128 0x3e
+ 335 0031 0B       		.uleb128 0xb
+ 336 0032 03       		.uleb128 0x3
+ 337 0033 08       		.uleb128 0x8
+ 338 0034 00       		.byte	0
+ 339 0035 00       		.byte	0
+ 340 0036 05       		.uleb128 0x5
+ 341 0037 2E       		.uleb128 0x2e
+ 342 0038 01       		.byte	0x1
+ 343 0039 3F       		.uleb128 0x3f
+ 344 003a 19       		.uleb128 0x19
+ 345 003b 03       		.uleb128 0x3
+ 346 003c 0E       		.uleb128 0xe
+ 347 003d 3A       		.uleb128 0x3a
+ 348 003e 0B       		.uleb128 0xb
+ 349 003f 3B       		.uleb128 0x3b
+ 350 0040 0B       		.uleb128 0xb
+ 351 0041 27       		.uleb128 0x27
+ 352 0042 19       		.uleb128 0x19
+ 353 0043 49       		.uleb128 0x49
+ 354 0044 13       		.uleb128 0x13
+ 355 0045 8701     		.uleb128 0x87
+ 356 0047 19       		.uleb128 0x19
+ 357 0048 11       		.uleb128 0x11
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cczrT9pg.s 			page 8
+
+
+ 358 0049 01       		.uleb128 0x1
+ 359 004a 12       		.uleb128 0x12
+ 360 004b 06       		.uleb128 0x6
+ 361 004c 40       		.uleb128 0x40
+ 362 004d 18       		.uleb128 0x18
+ 363 004e 9742     		.uleb128 0x2117
+ 364 0050 19       		.uleb128 0x19
+ 365 0051 01       		.uleb128 0x1
+ 366 0052 13       		.uleb128 0x13
+ 367 0053 00       		.byte	0
+ 368 0054 00       		.byte	0
+ 369 0055 06       		.uleb128 0x6
+ 370 0056 898201   		.uleb128 0x4109
+ 371 0059 00       		.byte	0
+ 372 005a 11       		.uleb128 0x11
+ 373 005b 01       		.uleb128 0x1
+ 374 005c 31       		.uleb128 0x31
+ 375 005d 13       		.uleb128 0x13
+ 376 005e 00       		.byte	0
+ 377 005f 00       		.byte	0
+ 378 0060 07       		.uleb128 0x7
+ 379 0061 898201   		.uleb128 0x4109
+ 380 0064 01       		.byte	0x1
+ 381 0065 11       		.uleb128 0x11
+ 382 0066 01       		.uleb128 0x1
+ 383 0067 31       		.uleb128 0x31
+ 384 0068 13       		.uleb128 0x13
+ 385 0069 01       		.uleb128 0x1
+ 386 006a 13       		.uleb128 0x13
+ 387 006b 00       		.byte	0
+ 388 006c 00       		.byte	0
+ 389 006d 08       		.uleb128 0x8
+ 390 006e 8A8201   		.uleb128 0x410a
+ 391 0071 00       		.byte	0
+ 392 0072 02       		.uleb128 0x2
+ 393 0073 18       		.uleb128 0x18
+ 394 0074 9142     		.uleb128 0x2111
+ 395 0076 18       		.uleb128 0x18
+ 396 0077 00       		.byte	0
+ 397 0078 00       		.byte	0
+ 398 0079 09       		.uleb128 0x9
+ 399 007a 34       		.uleb128 0x34
+ 400 007b 00       		.byte	0
+ 401 007c 03       		.uleb128 0x3
+ 402 007d 08       		.uleb128 0x8
+ 403 007e 3A       		.uleb128 0x3a
+ 404 007f 0B       		.uleb128 0xb
+ 405 0080 3B       		.uleb128 0x3b
+ 406 0081 0B       		.uleb128 0xb
+ 407 0082 49       		.uleb128 0x49
+ 408 0083 13       		.uleb128 0x13
+ 409 0084 3F       		.uleb128 0x3f
+ 410 0085 19       		.uleb128 0x19
+ 411 0086 02       		.uleb128 0x2
+ 412 0087 18       		.uleb128 0x18
+ 413 0088 00       		.byte	0
+ 414 0089 00       		.byte	0
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cczrT9pg.s 			page 9
+
+
+ 415 008a 0A       		.uleb128 0xa
+ 416 008b 2E       		.uleb128 0x2e
+ 417 008c 00       		.byte	0
+ 418 008d 3F       		.uleb128 0x3f
+ 419 008e 19       		.uleb128 0x19
+ 420 008f 3C       		.uleb128 0x3c
+ 421 0090 19       		.uleb128 0x19
+ 422 0091 6E       		.uleb128 0x6e
+ 423 0092 0E       		.uleb128 0xe
+ 424 0093 03       		.uleb128 0x3
+ 425 0094 0E       		.uleb128 0xe
+ 426 0095 3A       		.uleb128 0x3a
+ 427 0096 0B       		.uleb128 0xb
+ 428 0097 3B       		.uleb128 0x3b
+ 429 0098 0B       		.uleb128 0xb
+ 430 0099 00       		.byte	0
+ 431 009a 00       		.byte	0
+ 432 009b 00       		.byte	0
+ 433              		.section	.debug_aranges,"",%progbits
+ 434 0000 1C000000 		.4byte	0x1c
+ 435 0004 0200     		.2byte	0x2
+ 436 0006 00000000 		.4byte	.Ldebug_info0
+ 437 000a 04       		.byte	0x4
+ 438 000b 00       		.byte	0
+ 439 000c 0000     		.2byte	0
+ 440 000e 0000     		.2byte	0
+ 441 0010 00000000 		.4byte	.LFB32
+ 442 0014 5C000000 		.4byte	.LFE32-.LFB32
+ 443 0018 00000000 		.4byte	0
+ 444 001c 00000000 		.4byte	0
+ 445              		.section	.debug_ranges,"",%progbits
+ 446              	.Ldebug_ranges0:
+ 447 0000 00000000 		.4byte	.LFB32
+ 448 0004 5C000000 		.4byte	.LFE32
+ 449 0008 00000000 		.4byte	0
+ 450 000c 00000000 		.4byte	0
+ 451              		.section	.debug_line,"",%progbits
+ 452              	.Ldebug_line0:
+ 453 0000 98010000 		.section	.debug_str,"MS",%progbits,1
+ 453      02005001 
+ 453      00000201 
+ 453      FB0E0D00 
+ 453      01010101 
+ 454              	.LASF6:
+ 455 0000 6C6F6E67 		.ascii	"long long int\000"
+ 455      206C6F6E 
+ 455      6720696E 
+ 455      7400
+ 456              	.LASF8:
+ 457 000e 756E7369 		.ascii	"unsigned int\000"
+ 457      676E6564 
+ 457      20696E74 
+ 457      00
+ 458              	.LASF21:
+ 459 001b 6D61696E 		.ascii	"main.c\000"
+ 459      2E6300
+ 460              	.LASF23:
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cczrT9pg.s 			page 10
+
+
+ 461 0022 6D61696E 		.ascii	"main\000"
+ 461      00
+ 462              	.LASF19:
+ 463 0027 43794465 		.ascii	"CyDelay\000"
+ 463      6C617900 
+ 464              	.LASF5:
+ 465 002f 6C6F6E67 		.ascii	"long unsigned int\000"
+ 465      20756E73 
+ 465      69676E65 
+ 465      6420696E 
+ 465      7400
+ 466              	.LASF7:
+ 467 0041 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 467      206C6F6E 
+ 467      6720756E 
+ 467      7369676E 
+ 467      65642069 
+ 468              	.LASF9:
+ 469 0058 5F5F7569 		.ascii	"__uint8_t\000"
+ 469      6E74385F 
+ 469      7400
+ 470              	.LASF11:
+ 471 0062 666C6F61 		.ascii	"float\000"
+ 471      7400
+ 472              	.LASF17:
+ 473 0068 4C46436C 		.ascii	"LFClk_Start\000"
+ 473      6B5F5374 
+ 473      61727400 
+ 474              	.LASF16:
+ 475 0074 50574D5F 		.ascii	"PWM_Start\000"
+ 475      53746172 
+ 475      7400
+ 476              	.LASF10:
+ 477 007e 75696E74 		.ascii	"uint8_t\000"
+ 477      385F7400 
+ 478              	.LASF1:
+ 479 0086 756E7369 		.ascii	"unsigned char\000"
+ 479      676E6564 
+ 479      20636861 
+ 479      7200
+ 480              	.LASF13:
+ 481 0094 63686172 		.ascii	"char\000"
+ 481      00
+ 482              	.LASF4:
+ 483 0099 6C6F6E67 		.ascii	"long int\000"
+ 483      20696E74 
+ 483      00
+ 484              	.LASF12:
+ 485 00a2 646F7562 		.ascii	"double\000"
+ 485      6C6500
+ 486              	.LASF22:
+ 487 00a9 433A5C55 		.ascii	"C:\\Users\\oggih\\OneDrive\\Documents\\PSoC Creator"
+ 487      73657273 
+ 487      5C6F6767 
+ 487      69685C4F 
+ 487      6E654472 
+ 488 00d7 5C4C525C 		.ascii	"\\LR\\LR6.cydsn\000"
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cczrT9pg.s 			page 11
+
+
+ 488      4C52362E 
+ 488      63796473 
+ 488      6E00
+ 489              	.LASF20:
+ 490 00e5 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 490      43313120 
+ 490      352E342E 
+ 490      31203230 
+ 490      31363036 
+ 491 0118 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 491      20726576 
+ 491      6973696F 
+ 491      6E203233 
+ 491      37373135 
+ 492 014b 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 492      66756E63 
+ 492      74696F6E 
+ 492      2D736563 
+ 492      74696F6E 
+ 493              	.LASF3:
+ 494 0173 73686F72 		.ascii	"short unsigned int\000"
+ 494      7420756E 
+ 494      7369676E 
+ 494      65642069 
+ 494      6E7400
+ 495              	.LASF0:
+ 496 0186 7369676E 		.ascii	"signed char\000"
+ 496      65642063 
+ 496      68617200 
+ 497              	.LASF14:
+ 498 0192 6C6F6E67 		.ascii	"long double\000"
+ 498      20646F75 
+ 498      626C6500 
+ 499              	.LASF2:
+ 500 019e 73686F72 		.ascii	"short int\000"
+ 500      7420696E 
+ 500      7400
+ 501              	.LASF18:
+ 502 01a8 50574D5F 		.ascii	"PWM_WriteCompare\000"
+ 502      57726974 
+ 502      65436F6D 
+ 502      70617265 
+ 502      00
+ 503              	.LASF15:
+ 504 01b9 73697A65 		.ascii	"sizetype\000"
+ 504      74797065 
+ 504      00
+ 505              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -1,0 +1,1361 @@
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.LCD_ShiftString,"ax",%progbits
+  20              		.align	2
+  21              		.global	LCD_ShiftString
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	LCD_ShiftString, %function
+  25              	LCD_ShiftString:
+  26              	.LFB34:
+  27              		.file 1 "main.c"
+   1:main.c        **** #include "project.h"
+   2:main.c        **** #include <stdio.h>
+   3:main.c        **** #include <stdlib.h>
+   4:main.c        **** #include <string.h>
+   5:main.c        **** #include <locale.h>
+   6:main.c        **** 
+   7:main.c        **** #define LCD_NAME_ROW     (0u) // Рядок для виведення імені
+   8:main.c        **** #define LCD_SURNAME_ROW  (1u) // Рядок для виведення прізвища
+   9:main.c        **** #define LCD_SHIFT_DELAY  (500u) // Затримка між зміщеннями
+  10:main.c        **** 
+  11:main.c        **** void LCD_ShiftString(char* str, uint8_t shiftDirection);
+  12:main.c        **** 
+  13:main.c        **** char name[]    = "Volodimir"; // Ім'я студента
+  14:main.c        **** char surname[] = "Petrashek"; // Прізвище студента
+  15:main.c        **** 
+  16:main.c        **** 
+  17:main.c        **** int main(void)
+  18:main.c        **** {
+  19:main.c        ****     CyGlobalIntEnable; /* Включення глобальних переривань. */
+  20:main.c        **** 
+  21:main.c        ****     setlocale(LC_CTYPE, "ukr");
+  22:main.c        ****     
+  23:main.c        ****     LCD_Char_1_Start(); // Ініціалізація дисплею LCD
+  24:main.c        **** 
+  25:main.c        ****     for(;;)
+  26:main.c        **** {
+  27:main.c        ****     LCD_Char_1_Position(0,0);
+  28:main.c        ****     LCD_Char_1_PrintString(name);
+  29:main.c        ****     LCD_Char_1_Position(1,0);
+  30:main.c        ****     LCD_Char_1_PrintString(surname);
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 2
+
+
+  31:main.c        ****     LCD_ShiftString(name,1);
+  32:main.c        **** }
+  33:main.c        **** }
+  34:main.c        **** 
+  35:main.c        **** void LCD_ShiftString(char* str, uint8_t shiftDirection)
+  36:main.c        **** {
+  28              		.loc 1 36 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  34              		.cfi_def_cfa_offset 24
+  35              		.cfi_offset 3, -24
+  36              		.cfi_offset 4, -20
+  37              		.cfi_offset 5, -16
+  38              		.cfi_offset 6, -12
+  39              		.cfi_offset 7, -8
+  40              		.cfi_offset 14, -4
+  41 0002 0500     		movs	r5, r0
+  42 0004 0F00     		movs	r7, r1
+  37:main.c        ****     uint8_t strLength = strlen(str);
+  43              		.loc 1 37 0
+  44 0006 FFF7FEFF 		bl	strlen
+  45              	.LVL1:
+  46 000a C6B2     		uxtb	r6, r0
+  47              	.LVL2:
+  38:main.c        ****     uint8_t shiftCount = 0;
+  39:main.c        **** 
+  40:main.c        ****     if (strLength > 16)
+  48              		.loc 1 40 0
+  49 000c 102E     		cmp	r6, #16
+  50 000e 36D9     		bls	.L9
+  41:main.c        ****     {
+  42:main.c        ****         // Якщо рядок занадто довгий для виведення на одно�
+  43:main.c        ****         LCD_Char_1_ClearDisplay();
+  51              		.loc 1 43 0
+  52 0010 0120     		movs	r0, #1
+  53 0012 FFF7FEFF 		bl	LCD_Char_1_WriteControl
+  54              	.LVL3:
+  44:main.c        ****         LCD_Char_1_PrintString(str);
+  55              		.loc 1 44 0
+  56 0016 2800     		movs	r0, r5
+  57 0018 FFF7FEFF 		bl	LCD_Char_1_PrintString
+  58              	.LVL4:
+  59 001c 32E0     		b	.L1
+  60              	.LVL5:
+  61              	.L8:
+  45:main.c        ****     }
+  46:main.c        ****     else
+  47:main.c        ****     {
+  48:main.c        ****         // Виведення рядка з зміщенням
+  49:main.c        ****         while (shiftCount <= strLength)
+  50:main.c        ****         {
+  51:main.c        ****             LCD_Char_1_ClearDisplay();
+  62              		.loc 1 51 0
+  63 001e 0120     		movs	r0, #1
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 3
+
+
+  64 0020 FFF7FEFF 		bl	LCD_Char_1_WriteControl
+  65              	.LVL6:
+  52:main.c        **** 
+  53:main.c        ****             if (shiftDirection == 1)
+  66              		.loc 1 53 0
+  67 0024 012F     		cmp	r7, #1
+  68 0026 07D1     		bne	.L4
+  54:main.c        ****             {
+  55:main.c        ****                 LCD_Char_1_Position(LCD_NAME_ROW, 0);
+  69              		.loc 1 55 0
+  70 0028 0021     		movs	r1, #0
+  71 002a 0020     		movs	r0, #0
+  72 002c FFF7FEFF 		bl	LCD_Char_1_Position
+  73              	.LVL7:
+  56:main.c        ****                 LCD_Char_1_PrintString(&str[shiftCount]);
+  74              		.loc 1 56 0
+  75 0030 2819     		adds	r0, r5, r4
+  76 0032 FFF7FEFF 		bl	LCD_Char_1_PrintString
+  77              	.LVL8:
+  78 0036 07E0     		b	.L5
+  79              	.L4:
+  57:main.c        ****             }
+  58:main.c        ****             else
+  59:main.c        ****             {
+  60:main.c        ****                 LCD_Char_1_Position(LCD_NAME_ROW, strLength - shiftCount);
+  80              		.loc 1 60 0
+  81 0038 311B     		subs	r1, r6, r4
+  82 003a C9B2     		uxtb	r1, r1
+  83 003c 0020     		movs	r0, #0
+  84 003e FFF7FEFF 		bl	LCD_Char_1_Position
+  85              	.LVL9:
+  61:main.c        ****                 LCD_Char_1_PrintString(str);
+  86              		.loc 1 61 0
+  87 0042 2800     		movs	r0, r5
+  88 0044 FFF7FEFF 		bl	LCD_Char_1_PrintString
+  89              	.LVL10:
+  90              	.L5:
+  62:main.c        ****             }
+  63:main.c        **** 
+  64:main.c        ****             if (shiftDirection == 1)
+  91              		.loc 1 64 0
+  92 0048 012F     		cmp	r7, #1
+  93 004a 04D1     		bne	.L6
+  65:main.c        ****             {
+  66:main.c        ****                 shiftCount++;
+  94              		.loc 1 66 0
+  95 004c 0134     		adds	r4, r4, #1
+  96              	.LVL11:
+  97 004e E4B2     		uxtb	r4, r4
+  98              	.LVL12:
+  67:main.c        ****                 if (shiftCount > strLength)
+  99              		.loc 1 67 0
+ 100 0050 A642     		cmp	r6, r4
+ 101 0052 05D3     		bcc	.L10
+ 102 0054 07E0     		b	.L7
+ 103              	.L6:
+  68:main.c        ****                 {
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 4
+
+
+  69:main.c        ****                     shiftCount = 0;
+  70:main.c        ****                 }
+  71:main.c        ****             }
+  72:main.c        ****             else
+  73:main.c        ****             {
+  74:main.c        ****                 if (shiftCount > 0)
+ 104              		.loc 1 74 0
+ 105 0056 002C     		cmp	r4, #0
+ 106 0058 04D0     		beq	.L11
+  75:main.c        ****                 {
+  76:main.c        ****                     shiftCount--;
+ 107              		.loc 1 76 0
+ 108 005a 013C     		subs	r4, r4, #1
+ 109              	.LVL13:
+ 110 005c E4B2     		uxtb	r4, r4
+ 111              	.LVL14:
+ 112 005e 02E0     		b	.L7
+ 113              	.L10:
+  69:main.c        ****                 }
+ 114              		.loc 1 69 0
+ 115 0060 0024     		movs	r4, #0
+ 116              	.LVL15:
+ 117 0062 00E0     		b	.L7
+ 118              	.LVL16:
+ 119              	.L11:
+  77:main.c        ****                 }
+  78:main.c        ****                 else
+  79:main.c        ****                 {
+  80:main.c        ****                     shiftCount = strLength;
+ 120              		.loc 1 80 0
+ 121 0064 3400     		movs	r4, r6
+ 122              	.LVL17:
+ 123              	.L7:
+  81:main.c        ****                 }
+  82:main.c        ****             }
+  83:main.c        ****             
+  84:main.c        ****             LCD_Char_1_Position(1,0);
+ 124              		.loc 1 84 0
+ 125 0066 0021     		movs	r1, #0
+ 126 0068 0120     		movs	r0, #1
+ 127 006a FFF7FEFF 		bl	LCD_Char_1_Position
+ 128              	.LVL18:
+  85:main.c        ****             LCD_Char_1_PrintString(surname);
+ 129              		.loc 1 85 0
+ 130 006e 0648     		ldr	r0, .L12
+ 131 0070 FFF7FEFF 		bl	LCD_Char_1_PrintString
+ 132              	.LVL19:
+  86:main.c        ****             CyDelay(LCD_SHIFT_DELAY);
+ 133              		.loc 1 86 0
+ 134 0074 FA20     		movs	r0, #250
+ 135 0076 4000     		lsls	r0, r0, #1
+ 136 0078 FFF7FEFF 		bl	CyDelay
+ 137              	.LVL20:
+ 138 007c 00E0     		b	.L2
+ 139              	.LVL21:
+ 140              	.L9:
+ 141 007e 0024     		movs	r4, #0
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 5
+
+
+ 142              	.LVL22:
+ 143              	.L2:
+  49:main.c        ****         {
+ 144              		.loc 1 49 0
+ 145 0080 B442     		cmp	r4, r6
+ 146 0082 CCD9     		bls	.L8
+ 147              	.LVL23:
+ 148              	.L1:
+  87:main.c        ****         }
+  88:main.c        ****     }
+  89:main.c        **** }...
+ 149              		.loc 1 89 0
+ 150              		@ sp needed
+ 151              	.LVL24:
+ 152              	.LVL25:
+ 153 0084 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 154              	.L13:
+ 155 0086 C046     		.align	2
+ 156              	.L12:
+ 157 0088 00000000 		.word	.LANCHOR0
+ 158              		.cfi_endproc
+ 159              	.LFE34:
+ 160              		.size	LCD_ShiftString, .-LCD_ShiftString
+ 161              		.section	.text.main,"ax",%progbits
+ 162              		.align	2
+ 163              		.global	main
+ 164              		.code	16
+ 165              		.thumb_func
+ 166              		.type	main, %function
+ 167              	main:
+ 168              	.LFB33:
+  18:main.c        **** {
+ 169              		.loc 1 18 0
+ 170              		.cfi_startproc
+ 171              		@ Volatile: function does not return.
+ 172              		@ args = 0, pretend = 0, frame = 0
+ 173              		@ frame_needed = 0, uses_anonymous_args = 0
+ 174 0000 70B5     		push	{r4, r5, r6, lr}
+ 175              		.cfi_def_cfa_offset 16
+ 176              		.cfi_offset 4, -16
+ 177              		.cfi_offset 5, -12
+ 178              		.cfi_offset 6, -8
+ 179              		.cfi_offset 14, -4
+  19:main.c        ****     CyGlobalIntEnable; /* Включення глобальних переривань. */
+ 180              		.loc 1 19 0
+ 181              		.syntax divided
+ 182              	@ 19 "main.c" 1
+ 183 0002 62B6     		CPSIE   i
+ 184              	@ 0 "" 2
+  21:main.c        ****     setlocale(LC_CTYPE, "ukr");
+ 185              		.loc 1 21 0
+ 186              		.thumb
+ 187              		.syntax unified
+ 188 0004 0D49     		ldr	r1, .L16
+ 189 0006 0220     		movs	r0, #2
+ 190 0008 FFF7FEFF 		bl	setlocale
+ 191              	.LVL26:
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 6
+
+
+  23:main.c        ****     LCD_Char_1_Start(); // Ініціалізація дисплею LCD
+ 192              		.loc 1 23 0
+ 193 000c FFF7FEFF 		bl	LCD_Char_1_Start
+ 194              	.LVL27:
+ 195              	.L15:
+  27:main.c        ****     LCD_Char_1_Position(0,0);
+ 196              		.loc 1 27 0 discriminator 1
+ 197 0010 0021     		movs	r1, #0
+ 198 0012 0020     		movs	r0, #0
+ 199 0014 FFF7FEFF 		bl	LCD_Char_1_Position
+ 200              	.LVL28:
+  28:main.c        ****     LCD_Char_1_PrintString(name);
+ 201              		.loc 1 28 0 discriminator 1
+ 202 0018 094D     		ldr	r5, .L16+4
+ 203 001a 2C00     		movs	r4, r5
+ 204 001c 0C34     		adds	r4, r4, #12
+ 205 001e 2000     		movs	r0, r4
+ 206 0020 FFF7FEFF 		bl	LCD_Char_1_PrintString
+ 207              	.LVL29:
+  29:main.c        ****     LCD_Char_1_Position(1,0);
+ 208              		.loc 1 29 0 discriminator 1
+ 209 0024 0021     		movs	r1, #0
+ 210 0026 0120     		movs	r0, #1
+ 211 0028 FFF7FEFF 		bl	LCD_Char_1_Position
+ 212              	.LVL30:
+  30:main.c        ****     LCD_Char_1_PrintString(surname);
+ 213              		.loc 1 30 0 discriminator 1
+ 214 002c 2800     		movs	r0, r5
+ 215 002e FFF7FEFF 		bl	LCD_Char_1_PrintString
+ 216              	.LVL31:
+  31:main.c        ****     LCD_ShiftString(name,1);
+ 217              		.loc 1 31 0 discriminator 1
+ 218 0032 0121     		movs	r1, #1
+ 219 0034 2000     		movs	r0, r4
+ 220 0036 FFF7FEFF 		bl	LCD_ShiftString
+ 221              	.LVL32:
+ 222 003a E9E7     		b	.L15
+ 223              	.L17:
+ 224              		.align	2
+ 225              	.L16:
+ 226 003c 00000000 		.word	.LC1
+ 227 0040 00000000 		.word	.LANCHOR0
+ 228              		.cfi_endproc
+ 229              	.LFE33:
+ 230              		.size	main, .-main
+ 231              		.global	surname
+ 232              		.global	name
+ 233              		.data
+ 234              		.align	2
+ 235              		.set	.LANCHOR0,. + 0
+ 236              		.type	surname, %object
+ 237              		.size	surname, 10
+ 238              	surname:
+ 239 0000 50657472 		.ascii	"Petrashek\000"
+ 239      61736865 
+ 239      6B00
+ 240 000a 0000     		.space	2
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 7
+
+
+ 241              		.type	name, %object
+ 242              		.size	name, 10
+ 243              	name:
+ 244 000c 566F6C6F 		.ascii	"Volodimir\000"
+ 244      64696D69 
+ 244      7200
+ 245              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 246              		.align	2
+ 247              	.LC1:
+ 248 0000 756B7200 		.ascii	"ukr\000"
+ 249              		.text
+ 250              	.Letext0:
+ 251              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 252              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 253              		.file 4 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 254              		.file 5 "Generated_Source\\PSoC4/LCD_Char_1.h"
+ 255              		.file 6 "Generated_Source\\PSoC4/CyLib.h"
+ 256              		.file 7 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 257              		.section	.debug_info,"",%progbits
+ 258              	.Ldebug_info0:
+ 259 0000 11030000 		.4byte	0x311
+ 260 0004 0400     		.2byte	0x4
+ 261 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 262 000a 04       		.byte	0x4
+ 263 000b 01       		.uleb128 0x1
+ 264 000c 38010000 		.4byte	.LASF28
+ 265 0010 0C       		.byte	0xc
+ 266 0011 DD010000 		.4byte	.LASF29
+ 267 0015 DD000000 		.4byte	.LASF30
+ 268 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 269 001d 00000000 		.4byte	0
+ 270 0021 00000000 		.4byte	.Ldebug_line0
+ 271 0025 02       		.uleb128 0x2
+ 272 0026 01       		.byte	0x1
+ 273 0027 06       		.byte	0x6
+ 274 0028 2D020000 		.4byte	.LASF0
+ 275 002c 03       		.uleb128 0x3
+ 276 002d 22000000 		.4byte	.LASF9
+ 277 0031 02       		.byte	0x2
+ 278 0032 1D       		.byte	0x1d
+ 279 0033 37000000 		.4byte	0x37
+ 280 0037 02       		.uleb128 0x2
+ 281 0038 01       		.byte	0x1
+ 282 0039 08       		.byte	0x8
+ 283 003a B3000000 		.4byte	.LASF1
+ 284 003e 02       		.uleb128 0x2
+ 285 003f 02       		.byte	0x2
+ 286 0040 05       		.byte	0x5
+ 287 0041 FD010000 		.4byte	.LASF2
+ 288 0045 02       		.uleb128 0x2
+ 289 0046 02       		.byte	0x2
+ 290 0047 07       		.byte	0x7
+ 291 0048 A0000000 		.4byte	.LASF3
+ 292 004c 02       		.uleb128 0x2
+ 293 004d 04       		.byte	0x4
+ 294 004e 05       		.byte	0x5
+ 295 004f 07020000 		.4byte	.LASF4
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 8
+
+
+ 296 0053 02       		.uleb128 0x2
+ 297 0054 04       		.byte	0x4
+ 298 0055 07       		.byte	0x7
+ 299 0056 8E000000 		.4byte	.LASF5
+ 300 005a 02       		.uleb128 0x2
+ 301 005b 08       		.byte	0x8
+ 302 005c 05       		.byte	0x5
+ 303 005d CF010000 		.4byte	.LASF6
+ 304 0061 02       		.uleb128 0x2
+ 305 0062 08       		.byte	0x8
+ 306 0063 07       		.byte	0x7
+ 307 0064 19010000 		.4byte	.LASF7
+ 308 0068 04       		.uleb128 0x4
+ 309 0069 04       		.byte	0x4
+ 310 006a 05       		.byte	0x5
+ 311 006b 696E7400 		.ascii	"int\000"
+ 312 006f 02       		.uleb128 0x2
+ 313 0070 04       		.byte	0x4
+ 314 0071 07       		.byte	0x7
+ 315 0072 37000000 		.4byte	.LASF8
+ 316 0076 03       		.uleb128 0x3
+ 317 0077 30010000 		.4byte	.LASF10
+ 318 007b 03       		.byte	0x3
+ 319 007c 18       		.byte	0x18
+ 320 007d 2C000000 		.4byte	0x2c
+ 321 0081 02       		.uleb128 0x2
+ 322 0082 04       		.byte	0x4
+ 323 0083 04       		.byte	0x4
+ 324 0084 5A000000 		.4byte	.LASF11
+ 325 0088 02       		.uleb128 0x2
+ 326 0089 08       		.byte	0x8
+ 327 008a 04       		.byte	0x4
+ 328 008b 44000000 		.4byte	.LASF12
+ 329 008f 02       		.uleb128 0x2
+ 330 0090 01       		.byte	0x1
+ 331 0091 08       		.byte	0x8
+ 332 0092 E4010000 		.4byte	.LASF13
+ 333 0096 02       		.uleb128 0x2
+ 334 0097 04       		.byte	0x4
+ 335 0098 07       		.byte	0x7
+ 336 0099 C6010000 		.4byte	.LASF14
+ 337 009d 02       		.uleb128 0x2
+ 338 009e 08       		.byte	0x8
+ 339 009f 04       		.byte	0x4
+ 340 00a0 21020000 		.4byte	.LASF15
+ 341 00a4 05       		.uleb128 0x5
+ 342 00a5 04       		.byte	0x4
+ 343 00a6 8F000000 		.4byte	0x8f
+ 344 00aa 06       		.uleb128 0x6
+ 345 00ab C1000000 		.4byte	.LASF31
+ 346 00af 01       		.byte	0x1
+ 347 00b0 23       		.byte	0x23
+ 348 00b1 00000000 		.4byte	.LFB34
+ 349 00b5 8C000000 		.4byte	.LFE34-.LFB34
+ 350 00b9 01       		.uleb128 0x1
+ 351 00ba 9C       		.byte	0x9c
+ 352 00bb E9010000 		.4byte	0x1e9
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 9
+
+
+ 353 00bf 07       		.uleb128 0x7
+ 354 00c0 73747200 		.ascii	"str\000"
+ 355 00c4 01       		.byte	0x1
+ 356 00c5 23       		.byte	0x23
+ 357 00c6 A4000000 		.4byte	0xa4
+ 358 00ca 00000000 		.4byte	.LLST0
+ 359 00ce 08       		.uleb128 0x8
+ 360 00cf 60000000 		.4byte	.LASF16
+ 361 00d3 01       		.byte	0x1
+ 362 00d4 23       		.byte	0x23
+ 363 00d5 76000000 		.4byte	0x76
+ 364 00d9 2C000000 		.4byte	.LLST1
+ 365 00dd 09       		.uleb128 0x9
+ 366 00de 50000000 		.4byte	.LASF17
+ 367 00e2 01       		.byte	0x1
+ 368 00e3 25       		.byte	0x25
+ 369 00e4 76000000 		.4byte	0x76
+ 370 00e8 4D000000 		.4byte	.LLST2
+ 371 00ec 09       		.uleb128 0x9
+ 372 00ed 2C000000 		.4byte	.LASF18
+ 373 00f1 01       		.byte	0x1
+ 374 00f2 26       		.byte	0x26
+ 375 00f3 76000000 		.4byte	0x76
+ 376 00f7 60000000 		.4byte	.LLST3
+ 377 00fb 0A       		.uleb128 0xa
+ 378 00fc 0A000000 		.4byte	.LVL1
+ 379 0100 C7020000 		.4byte	0x2c7
+ 380 0104 0F010000 		.4byte	0x10f
+ 381 0108 0B       		.uleb128 0xb
+ 382 0109 01       		.uleb128 0x1
+ 383 010a 50       		.byte	0x50
+ 384 010b 02       		.uleb128 0x2
+ 385 010c 75       		.byte	0x75
+ 386 010d 00       		.sleb128 0
+ 387 010e 00       		.byte	0
+ 388 010f 0A       		.uleb128 0xa
+ 389 0110 16000000 		.4byte	.LVL3
+ 390 0114 D2020000 		.4byte	0x2d2
+ 391 0118 22010000 		.4byte	0x122
+ 392 011c 0B       		.uleb128 0xb
+ 393 011d 01       		.uleb128 0x1
+ 394 011e 50       		.byte	0x50
+ 395 011f 01       		.uleb128 0x1
+ 396 0120 31       		.byte	0x31
+ 397 0121 00       		.byte	0
+ 398 0122 0A       		.uleb128 0xa
+ 399 0123 1C000000 		.4byte	.LVL4
+ 400 0127 DD020000 		.4byte	0x2dd
+ 401 012b 36010000 		.4byte	0x136
+ 402 012f 0B       		.uleb128 0xb
+ 403 0130 01       		.uleb128 0x1
+ 404 0131 50       		.byte	0x50
+ 405 0132 02       		.uleb128 0x2
+ 406 0133 75       		.byte	0x75
+ 407 0134 00       		.sleb128 0
+ 408 0135 00       		.byte	0
+ 409 0136 0A       		.uleb128 0xa
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 10
+
+
+ 410 0137 24000000 		.4byte	.LVL6
+ 411 013b D2020000 		.4byte	0x2d2
+ 412 013f 49010000 		.4byte	0x149
+ 413 0143 0B       		.uleb128 0xb
+ 414 0144 01       		.uleb128 0x1
+ 415 0145 50       		.byte	0x50
+ 416 0146 01       		.uleb128 0x1
+ 417 0147 31       		.byte	0x31
+ 418 0148 00       		.byte	0
+ 419 0149 0A       		.uleb128 0xa
+ 420 014a 30000000 		.4byte	.LVL7
+ 421 014e E8020000 		.4byte	0x2e8
+ 422 0152 61010000 		.4byte	0x161
+ 423 0156 0B       		.uleb128 0xb
+ 424 0157 01       		.uleb128 0x1
+ 425 0158 50       		.byte	0x50
+ 426 0159 01       		.uleb128 0x1
+ 427 015a 30       		.byte	0x30
+ 428 015b 0B       		.uleb128 0xb
+ 429 015c 01       		.uleb128 0x1
+ 430 015d 51       		.byte	0x51
+ 431 015e 01       		.uleb128 0x1
+ 432 015f 30       		.byte	0x30
+ 433 0160 00       		.byte	0
+ 434 0161 0A       		.uleb128 0xa
+ 435 0162 36000000 		.4byte	.LVL8
+ 436 0166 DD020000 		.4byte	0x2dd
+ 437 016a 78010000 		.4byte	0x178
+ 438 016e 0B       		.uleb128 0xb
+ 439 016f 01       		.uleb128 0x1
+ 440 0170 50       		.byte	0x50
+ 441 0171 05       		.uleb128 0x5
+ 442 0172 75       		.byte	0x75
+ 443 0173 00       		.sleb128 0
+ 444 0174 74       		.byte	0x74
+ 445 0175 00       		.sleb128 0
+ 446 0176 22       		.byte	0x22
+ 447 0177 00       		.byte	0
+ 448 0178 0A       		.uleb128 0xa
+ 449 0179 42000000 		.4byte	.LVL9
+ 450 017d E8020000 		.4byte	0x2e8
+ 451 0181 94010000 		.4byte	0x194
+ 452 0185 0B       		.uleb128 0xb
+ 453 0186 01       		.uleb128 0x1
+ 454 0187 50       		.byte	0x50
+ 455 0188 01       		.uleb128 0x1
+ 456 0189 30       		.byte	0x30
+ 457 018a 0B       		.uleb128 0xb
+ 458 018b 01       		.uleb128 0x1
+ 459 018c 51       		.byte	0x51
+ 460 018d 05       		.uleb128 0x5
+ 461 018e 76       		.byte	0x76
+ 462 018f 00       		.sleb128 0
+ 463 0190 74       		.byte	0x74
+ 464 0191 00       		.sleb128 0
+ 465 0192 1C       		.byte	0x1c
+ 466 0193 00       		.byte	0
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 11
+
+
+ 467 0194 0A       		.uleb128 0xa
+ 468 0195 48000000 		.4byte	.LVL10
+ 469 0199 DD020000 		.4byte	0x2dd
+ 470 019d A8010000 		.4byte	0x1a8
+ 471 01a1 0B       		.uleb128 0xb
+ 472 01a2 01       		.uleb128 0x1
+ 473 01a3 50       		.byte	0x50
+ 474 01a4 02       		.uleb128 0x2
+ 475 01a5 75       		.byte	0x75
+ 476 01a6 00       		.sleb128 0
+ 477 01a7 00       		.byte	0
+ 478 01a8 0A       		.uleb128 0xa
+ 479 01a9 6E000000 		.4byte	.LVL18
+ 480 01ad E8020000 		.4byte	0x2e8
+ 481 01b1 C0010000 		.4byte	0x1c0
+ 482 01b5 0B       		.uleb128 0xb
+ 483 01b6 01       		.uleb128 0x1
+ 484 01b7 50       		.byte	0x50
+ 485 01b8 01       		.uleb128 0x1
+ 486 01b9 31       		.byte	0x31
+ 487 01ba 0B       		.uleb128 0xb
+ 488 01bb 01       		.uleb128 0x1
+ 489 01bc 51       		.byte	0x51
+ 490 01bd 01       		.uleb128 0x1
+ 491 01be 30       		.byte	0x30
+ 492 01bf 00       		.byte	0
+ 493 01c0 0A       		.uleb128 0xa
+ 494 01c1 74000000 		.4byte	.LVL19
+ 495 01c5 DD020000 		.4byte	0x2dd
+ 496 01c9 D7010000 		.4byte	0x1d7
+ 497 01cd 0B       		.uleb128 0xb
+ 498 01ce 01       		.uleb128 0x1
+ 499 01cf 50       		.byte	0x50
+ 500 01d0 05       		.uleb128 0x5
+ 501 01d1 03       		.byte	0x3
+ 502 01d2 00000000 		.4byte	.LANCHOR0
+ 503 01d6 00       		.byte	0
+ 504 01d7 0C       		.uleb128 0xc
+ 505 01d8 7C000000 		.4byte	.LVL20
+ 506 01dc F3020000 		.4byte	0x2f3
+ 507 01e0 0B       		.uleb128 0xb
+ 508 01e1 01       		.uleb128 0x1
+ 509 01e2 50       		.byte	0x50
+ 510 01e3 03       		.uleb128 0x3
+ 511 01e4 0A       		.byte	0xa
+ 512 01e5 F401     		.2byte	0x1f4
+ 513 01e7 00       		.byte	0
+ 514 01e8 00       		.byte	0
+ 515 01e9 0D       		.uleb128 0xd
+ 516 01ea D1000000 		.4byte	.LASF32
+ 517 01ee 01       		.byte	0x1
+ 518 01ef 11       		.byte	0x11
+ 519 01f0 68000000 		.4byte	0x68
+ 520 01f4 00000000 		.4byte	.LFB33
+ 521 01f8 44000000 		.4byte	.LFE33-.LFB33
+ 522 01fc 01       		.uleb128 0x1
+ 523 01fd 9C       		.byte	0x9c
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 12
+
+
+ 524 01fe 95020000 		.4byte	0x295
+ 525 0202 0A       		.uleb128 0xa
+ 526 0203 0C000000 		.4byte	.LVL26
+ 527 0207 FE020000 		.4byte	0x2fe
+ 528 020b 1E020000 		.4byte	0x21e
+ 529 020f 0B       		.uleb128 0xb
+ 530 0210 01       		.uleb128 0x1
+ 531 0211 50       		.byte	0x50
+ 532 0212 01       		.uleb128 0x1
+ 533 0213 32       		.byte	0x32
+ 534 0214 0B       		.uleb128 0xb
+ 535 0215 01       		.uleb128 0x1
+ 536 0216 51       		.byte	0x51
+ 537 0217 05       		.uleb128 0x5
+ 538 0218 03       		.byte	0x3
+ 539 0219 00000000 		.4byte	.LC1
+ 540 021d 00       		.byte	0
+ 541 021e 0E       		.uleb128 0xe
+ 542 021f 10000000 		.4byte	.LVL27
+ 543 0223 09030000 		.4byte	0x309
+ 544 0227 0A       		.uleb128 0xa
+ 545 0228 18000000 		.4byte	.LVL28
+ 546 022c E8020000 		.4byte	0x2e8
+ 547 0230 3F020000 		.4byte	0x23f
+ 548 0234 0B       		.uleb128 0xb
+ 549 0235 01       		.uleb128 0x1
+ 550 0236 50       		.byte	0x50
+ 551 0237 01       		.uleb128 0x1
+ 552 0238 30       		.byte	0x30
+ 553 0239 0B       		.uleb128 0xb
+ 554 023a 01       		.uleb128 0x1
+ 555 023b 51       		.byte	0x51
+ 556 023c 01       		.uleb128 0x1
+ 557 023d 30       		.byte	0x30
+ 558 023e 00       		.byte	0
+ 559 023f 0A       		.uleb128 0xa
+ 560 0240 24000000 		.4byte	.LVL29
+ 561 0244 DD020000 		.4byte	0x2dd
+ 562 0248 53020000 		.4byte	0x253
+ 563 024c 0B       		.uleb128 0xb
+ 564 024d 01       		.uleb128 0x1
+ 565 024e 50       		.byte	0x50
+ 566 024f 02       		.uleb128 0x2
+ 567 0250 74       		.byte	0x74
+ 568 0251 00       		.sleb128 0
+ 569 0252 00       		.byte	0
+ 570 0253 0A       		.uleb128 0xa
+ 571 0254 2C000000 		.4byte	.LVL30
+ 572 0258 E8020000 		.4byte	0x2e8
+ 573 025c 6B020000 		.4byte	0x26b
+ 574 0260 0B       		.uleb128 0xb
+ 575 0261 01       		.uleb128 0x1
+ 576 0262 50       		.byte	0x50
+ 577 0263 01       		.uleb128 0x1
+ 578 0264 31       		.byte	0x31
+ 579 0265 0B       		.uleb128 0xb
+ 580 0266 01       		.uleb128 0x1
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 13
+
+
+ 581 0267 51       		.byte	0x51
+ 582 0268 01       		.uleb128 0x1
+ 583 0269 30       		.byte	0x30
+ 584 026a 00       		.byte	0
+ 585 026b 0A       		.uleb128 0xa
+ 586 026c 32000000 		.4byte	.LVL31
+ 587 0270 DD020000 		.4byte	0x2dd
+ 588 0274 7F020000 		.4byte	0x27f
+ 589 0278 0B       		.uleb128 0xb
+ 590 0279 01       		.uleb128 0x1
+ 591 027a 50       		.byte	0x50
+ 592 027b 02       		.uleb128 0x2
+ 593 027c 75       		.byte	0x75
+ 594 027d 00       		.sleb128 0
+ 595 027e 00       		.byte	0
+ 596 027f 0C       		.uleb128 0xc
+ 597 0280 3A000000 		.4byte	.LVL32
+ 598 0284 AA000000 		.4byte	0xaa
+ 599 0288 0B       		.uleb128 0xb
+ 600 0289 01       		.uleb128 0x1
+ 601 028a 50       		.byte	0x50
+ 602 028b 02       		.uleb128 0x2
+ 603 028c 74       		.byte	0x74
+ 604 028d 00       		.sleb128 0
+ 605 028e 0B       		.uleb128 0xb
+ 606 028f 01       		.uleb128 0x1
+ 607 0290 51       		.byte	0x51
+ 608 0291 01       		.uleb128 0x1
+ 609 0292 31       		.byte	0x31
+ 610 0293 00       		.byte	0
+ 611 0294 00       		.byte	0
+ 612 0295 0F       		.uleb128 0xf
+ 613 0296 8F000000 		.4byte	0x8f
+ 614 029a A5020000 		.4byte	0x2a5
+ 615 029e 10       		.uleb128 0x10
+ 616 029f 96000000 		.4byte	0x96
+ 617 02a3 09       		.byte	0x9
+ 618 02a4 00       		.byte	0
+ 619 02a5 11       		.uleb128 0x11
+ 620 02a6 4B000000 		.4byte	.LASF19
+ 621 02aa 01       		.byte	0x1
+ 622 02ab 0D       		.byte	0xd
+ 623 02ac 95020000 		.4byte	0x295
+ 624 02b0 05       		.uleb128 0x5
+ 625 02b1 03       		.byte	0x3
+ 626 02b2 00000000 		.4byte	name
+ 627 02b6 11       		.uleb128 0x11
+ 628 02b7 86000000 		.4byte	.LASF20
+ 629 02bb 01       		.byte	0x1
+ 630 02bc 0E       		.byte	0xe
+ 631 02bd 95020000 		.4byte	0x295
+ 632 02c1 05       		.uleb128 0x5
+ 633 02c2 03       		.byte	0x3
+ 634 02c3 00000000 		.4byte	surname
+ 635 02c7 12       		.uleb128 0x12
+ 636 02c8 D6000000 		.4byte	.LASF21
+ 637 02cc D6000000 		.4byte	.LASF21
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 14
+
+
+ 638 02d0 04       		.byte	0x4
+ 639 02d1 21       		.byte	0x21
+ 640 02d2 12       		.uleb128 0x12
+ 641 02d3 0A000000 		.4byte	.LASF22
+ 642 02d7 0A000000 		.4byte	.LASF22
+ 643 02db 05       		.byte	0x5
+ 644 02dc 3A       		.byte	0x3a
+ 645 02dd 12       		.uleb128 0x12
+ 646 02de 6F000000 		.4byte	.LASF23
+ 647 02e2 6F000000 		.4byte	.LASF23
+ 648 02e6 05       		.byte	0x5
+ 649 02e7 3C       		.byte	0x3c
+ 650 02e8 12       		.uleb128 0x12
+ 651 02e9 E9010000 		.4byte	.LASF24
+ 652 02ed E9010000 		.4byte	.LASF24
+ 653 02f1 05       		.byte	0x5
+ 654 02f2 3D       		.byte	0x3d
+ 655 02f3 12       		.uleb128 0x12
+ 656 02f4 39020000 		.4byte	.LASF25
+ 657 02f8 39020000 		.4byte	.LASF25
+ 658 02fc 06       		.byte	0x6
+ 659 02fd EC       		.byte	0xec
+ 660 02fe 12       		.uleb128 0x12
+ 661 02ff 00000000 		.4byte	.LASF26
+ 662 0303 00000000 		.4byte	.LASF26
+ 663 0307 07       		.byte	0x7
+ 664 0308 36       		.byte	0x36
+ 665 0309 12       		.uleb128 0x12
+ 666 030a 10020000 		.4byte	.LASF27
+ 667 030e 10020000 		.4byte	.LASF27
+ 668 0312 05       		.byte	0x5
+ 669 0313 38       		.byte	0x38
+ 670 0314 00       		.byte	0
+ 671              		.section	.debug_abbrev,"",%progbits
+ 672              	.Ldebug_abbrev0:
+ 673 0000 01       		.uleb128 0x1
+ 674 0001 11       		.uleb128 0x11
+ 675 0002 01       		.byte	0x1
+ 676 0003 25       		.uleb128 0x25
+ 677 0004 0E       		.uleb128 0xe
+ 678 0005 13       		.uleb128 0x13
+ 679 0006 0B       		.uleb128 0xb
+ 680 0007 03       		.uleb128 0x3
+ 681 0008 0E       		.uleb128 0xe
+ 682 0009 1B       		.uleb128 0x1b
+ 683 000a 0E       		.uleb128 0xe
+ 684 000b 55       		.uleb128 0x55
+ 685 000c 17       		.uleb128 0x17
+ 686 000d 11       		.uleb128 0x11
+ 687 000e 01       		.uleb128 0x1
+ 688 000f 10       		.uleb128 0x10
+ 689 0010 17       		.uleb128 0x17
+ 690 0011 00       		.byte	0
+ 691 0012 00       		.byte	0
+ 692 0013 02       		.uleb128 0x2
+ 693 0014 24       		.uleb128 0x24
+ 694 0015 00       		.byte	0
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 15
+
+
+ 695 0016 0B       		.uleb128 0xb
+ 696 0017 0B       		.uleb128 0xb
+ 697 0018 3E       		.uleb128 0x3e
+ 698 0019 0B       		.uleb128 0xb
+ 699 001a 03       		.uleb128 0x3
+ 700 001b 0E       		.uleb128 0xe
+ 701 001c 00       		.byte	0
+ 702 001d 00       		.byte	0
+ 703 001e 03       		.uleb128 0x3
+ 704 001f 16       		.uleb128 0x16
+ 705 0020 00       		.byte	0
+ 706 0021 03       		.uleb128 0x3
+ 707 0022 0E       		.uleb128 0xe
+ 708 0023 3A       		.uleb128 0x3a
+ 709 0024 0B       		.uleb128 0xb
+ 710 0025 3B       		.uleb128 0x3b
+ 711 0026 0B       		.uleb128 0xb
+ 712 0027 49       		.uleb128 0x49
+ 713 0028 13       		.uleb128 0x13
+ 714 0029 00       		.byte	0
+ 715 002a 00       		.byte	0
+ 716 002b 04       		.uleb128 0x4
+ 717 002c 24       		.uleb128 0x24
+ 718 002d 00       		.byte	0
+ 719 002e 0B       		.uleb128 0xb
+ 720 002f 0B       		.uleb128 0xb
+ 721 0030 3E       		.uleb128 0x3e
+ 722 0031 0B       		.uleb128 0xb
+ 723 0032 03       		.uleb128 0x3
+ 724 0033 08       		.uleb128 0x8
+ 725 0034 00       		.byte	0
+ 726 0035 00       		.byte	0
+ 727 0036 05       		.uleb128 0x5
+ 728 0037 0F       		.uleb128 0xf
+ 729 0038 00       		.byte	0
+ 730 0039 0B       		.uleb128 0xb
+ 731 003a 0B       		.uleb128 0xb
+ 732 003b 49       		.uleb128 0x49
+ 733 003c 13       		.uleb128 0x13
+ 734 003d 00       		.byte	0
+ 735 003e 00       		.byte	0
+ 736 003f 06       		.uleb128 0x6
+ 737 0040 2E       		.uleb128 0x2e
+ 738 0041 01       		.byte	0x1
+ 739 0042 3F       		.uleb128 0x3f
+ 740 0043 19       		.uleb128 0x19
+ 741 0044 03       		.uleb128 0x3
+ 742 0045 0E       		.uleb128 0xe
+ 743 0046 3A       		.uleb128 0x3a
+ 744 0047 0B       		.uleb128 0xb
+ 745 0048 3B       		.uleb128 0x3b
+ 746 0049 0B       		.uleb128 0xb
+ 747 004a 27       		.uleb128 0x27
+ 748 004b 19       		.uleb128 0x19
+ 749 004c 11       		.uleb128 0x11
+ 750 004d 01       		.uleb128 0x1
+ 751 004e 12       		.uleb128 0x12
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 16
+
+
+ 752 004f 06       		.uleb128 0x6
+ 753 0050 40       		.uleb128 0x40
+ 754 0051 18       		.uleb128 0x18
+ 755 0052 9742     		.uleb128 0x2117
+ 756 0054 19       		.uleb128 0x19
+ 757 0055 01       		.uleb128 0x1
+ 758 0056 13       		.uleb128 0x13
+ 759 0057 00       		.byte	0
+ 760 0058 00       		.byte	0
+ 761 0059 07       		.uleb128 0x7
+ 762 005a 05       		.uleb128 0x5
+ 763 005b 00       		.byte	0
+ 764 005c 03       		.uleb128 0x3
+ 765 005d 08       		.uleb128 0x8
+ 766 005e 3A       		.uleb128 0x3a
+ 767 005f 0B       		.uleb128 0xb
+ 768 0060 3B       		.uleb128 0x3b
+ 769 0061 0B       		.uleb128 0xb
+ 770 0062 49       		.uleb128 0x49
+ 771 0063 13       		.uleb128 0x13
+ 772 0064 02       		.uleb128 0x2
+ 773 0065 17       		.uleb128 0x17
+ 774 0066 00       		.byte	0
+ 775 0067 00       		.byte	0
+ 776 0068 08       		.uleb128 0x8
+ 777 0069 05       		.uleb128 0x5
+ 778 006a 00       		.byte	0
+ 779 006b 03       		.uleb128 0x3
+ 780 006c 0E       		.uleb128 0xe
+ 781 006d 3A       		.uleb128 0x3a
+ 782 006e 0B       		.uleb128 0xb
+ 783 006f 3B       		.uleb128 0x3b
+ 784 0070 0B       		.uleb128 0xb
+ 785 0071 49       		.uleb128 0x49
+ 786 0072 13       		.uleb128 0x13
+ 787 0073 02       		.uleb128 0x2
+ 788 0074 17       		.uleb128 0x17
+ 789 0075 00       		.byte	0
+ 790 0076 00       		.byte	0
+ 791 0077 09       		.uleb128 0x9
+ 792 0078 34       		.uleb128 0x34
+ 793 0079 00       		.byte	0
+ 794 007a 03       		.uleb128 0x3
+ 795 007b 0E       		.uleb128 0xe
+ 796 007c 3A       		.uleb128 0x3a
+ 797 007d 0B       		.uleb128 0xb
+ 798 007e 3B       		.uleb128 0x3b
+ 799 007f 0B       		.uleb128 0xb
+ 800 0080 49       		.uleb128 0x49
+ 801 0081 13       		.uleb128 0x13
+ 802 0082 02       		.uleb128 0x2
+ 803 0083 17       		.uleb128 0x17
+ 804 0084 00       		.byte	0
+ 805 0085 00       		.byte	0
+ 806 0086 0A       		.uleb128 0xa
+ 807 0087 898201   		.uleb128 0x4109
+ 808 008a 01       		.byte	0x1
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 17
+
+
+ 809 008b 11       		.uleb128 0x11
+ 810 008c 01       		.uleb128 0x1
+ 811 008d 31       		.uleb128 0x31
+ 812 008e 13       		.uleb128 0x13
+ 813 008f 01       		.uleb128 0x1
+ 814 0090 13       		.uleb128 0x13
+ 815 0091 00       		.byte	0
+ 816 0092 00       		.byte	0
+ 817 0093 0B       		.uleb128 0xb
+ 818 0094 8A8201   		.uleb128 0x410a
+ 819 0097 00       		.byte	0
+ 820 0098 02       		.uleb128 0x2
+ 821 0099 18       		.uleb128 0x18
+ 822 009a 9142     		.uleb128 0x2111
+ 823 009c 18       		.uleb128 0x18
+ 824 009d 00       		.byte	0
+ 825 009e 00       		.byte	0
+ 826 009f 0C       		.uleb128 0xc
+ 827 00a0 898201   		.uleb128 0x4109
+ 828 00a3 01       		.byte	0x1
+ 829 00a4 11       		.uleb128 0x11
+ 830 00a5 01       		.uleb128 0x1
+ 831 00a6 31       		.uleb128 0x31
+ 832 00a7 13       		.uleb128 0x13
+ 833 00a8 00       		.byte	0
+ 834 00a9 00       		.byte	0
+ 835 00aa 0D       		.uleb128 0xd
+ 836 00ab 2E       		.uleb128 0x2e
+ 837 00ac 01       		.byte	0x1
+ 838 00ad 3F       		.uleb128 0x3f
+ 839 00ae 19       		.uleb128 0x19
+ 840 00af 03       		.uleb128 0x3
+ 841 00b0 0E       		.uleb128 0xe
+ 842 00b1 3A       		.uleb128 0x3a
+ 843 00b2 0B       		.uleb128 0xb
+ 844 00b3 3B       		.uleb128 0x3b
+ 845 00b4 0B       		.uleb128 0xb
+ 846 00b5 27       		.uleb128 0x27
+ 847 00b6 19       		.uleb128 0x19
+ 848 00b7 49       		.uleb128 0x49
+ 849 00b8 13       		.uleb128 0x13
+ 850 00b9 8701     		.uleb128 0x87
+ 851 00bb 19       		.uleb128 0x19
+ 852 00bc 11       		.uleb128 0x11
+ 853 00bd 01       		.uleb128 0x1
+ 854 00be 12       		.uleb128 0x12
+ 855 00bf 06       		.uleb128 0x6
+ 856 00c0 40       		.uleb128 0x40
+ 857 00c1 18       		.uleb128 0x18
+ 858 00c2 9742     		.uleb128 0x2117
+ 859 00c4 19       		.uleb128 0x19
+ 860 00c5 01       		.uleb128 0x1
+ 861 00c6 13       		.uleb128 0x13
+ 862 00c7 00       		.byte	0
+ 863 00c8 00       		.byte	0
+ 864 00c9 0E       		.uleb128 0xe
+ 865 00ca 898201   		.uleb128 0x4109
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 18
+
+
+ 866 00cd 00       		.byte	0
+ 867 00ce 11       		.uleb128 0x11
+ 868 00cf 01       		.uleb128 0x1
+ 869 00d0 31       		.uleb128 0x31
+ 870 00d1 13       		.uleb128 0x13
+ 871 00d2 00       		.byte	0
+ 872 00d3 00       		.byte	0
+ 873 00d4 0F       		.uleb128 0xf
+ 874 00d5 01       		.uleb128 0x1
+ 875 00d6 01       		.byte	0x1
+ 876 00d7 49       		.uleb128 0x49
+ 877 00d8 13       		.uleb128 0x13
+ 878 00d9 01       		.uleb128 0x1
+ 879 00da 13       		.uleb128 0x13
+ 880 00db 00       		.byte	0
+ 881 00dc 00       		.byte	0
+ 882 00dd 10       		.uleb128 0x10
+ 883 00de 21       		.uleb128 0x21
+ 884 00df 00       		.byte	0
+ 885 00e0 49       		.uleb128 0x49
+ 886 00e1 13       		.uleb128 0x13
+ 887 00e2 2F       		.uleb128 0x2f
+ 888 00e3 0B       		.uleb128 0xb
+ 889 00e4 00       		.byte	0
+ 890 00e5 00       		.byte	0
+ 891 00e6 11       		.uleb128 0x11
+ 892 00e7 34       		.uleb128 0x34
+ 893 00e8 00       		.byte	0
+ 894 00e9 03       		.uleb128 0x3
+ 895 00ea 0E       		.uleb128 0xe
+ 896 00eb 3A       		.uleb128 0x3a
+ 897 00ec 0B       		.uleb128 0xb
+ 898 00ed 3B       		.uleb128 0x3b
+ 899 00ee 0B       		.uleb128 0xb
+ 900 00ef 49       		.uleb128 0x49
+ 901 00f0 13       		.uleb128 0x13
+ 902 00f1 3F       		.uleb128 0x3f
+ 903 00f2 19       		.uleb128 0x19
+ 904 00f3 02       		.uleb128 0x2
+ 905 00f4 18       		.uleb128 0x18
+ 906 00f5 00       		.byte	0
+ 907 00f6 00       		.byte	0
+ 908 00f7 12       		.uleb128 0x12
+ 909 00f8 2E       		.uleb128 0x2e
+ 910 00f9 00       		.byte	0
+ 911 00fa 3F       		.uleb128 0x3f
+ 912 00fb 19       		.uleb128 0x19
+ 913 00fc 3C       		.uleb128 0x3c
+ 914 00fd 19       		.uleb128 0x19
+ 915 00fe 6E       		.uleb128 0x6e
+ 916 00ff 0E       		.uleb128 0xe
+ 917 0100 03       		.uleb128 0x3
+ 918 0101 0E       		.uleb128 0xe
+ 919 0102 3A       		.uleb128 0x3a
+ 920 0103 0B       		.uleb128 0xb
+ 921 0104 3B       		.uleb128 0x3b
+ 922 0105 0B       		.uleb128 0xb
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 19
+
+
+ 923 0106 00       		.byte	0
+ 924 0107 00       		.byte	0
+ 925 0108 00       		.byte	0
+ 926              		.section	.debug_loc,"",%progbits
+ 927              	.Ldebug_loc0:
+ 928              	.LLST0:
+ 929 0000 00000000 		.4byte	.LVL0
+ 930 0004 09000000 		.4byte	.LVL1-1
+ 931 0008 0100     		.2byte	0x1
+ 932 000a 50       		.byte	0x50
+ 933 000b 09000000 		.4byte	.LVL1-1
+ 934 000f 84000000 		.4byte	.LVL24
+ 935 0013 0100     		.2byte	0x1
+ 936 0015 55       		.byte	0x55
+ 937 0016 84000000 		.4byte	.LVL24
+ 938 001a 8C000000 		.4byte	.LFE34
+ 939 001e 0400     		.2byte	0x4
+ 940 0020 F3       		.byte	0xf3
+ 941 0021 01       		.uleb128 0x1
+ 942 0022 50       		.byte	0x50
+ 943 0023 9F       		.byte	0x9f
+ 944 0024 00000000 		.4byte	0
+ 945 0028 00000000 		.4byte	0
+ 946              	.LLST1:
+ 947 002c 00000000 		.4byte	.LVL0
+ 948 0030 09000000 		.4byte	.LVL1-1
+ 949 0034 0100     		.2byte	0x1
+ 950 0036 51       		.byte	0x51
+ 951 0037 09000000 		.4byte	.LVL1-1
+ 952 003b 8C000000 		.4byte	.LFE34
+ 953 003f 0400     		.2byte	0x4
+ 954 0041 F3       		.byte	0xf3
+ 955 0042 01       		.uleb128 0x1
+ 956 0043 51       		.byte	0x51
+ 957 0044 9F       		.byte	0x9f
+ 958 0045 00000000 		.4byte	0
+ 959 0049 00000000 		.4byte	0
+ 960              	.LLST2:
+ 961 004d 0C000000 		.4byte	.LVL2
+ 962 0051 84000000 		.4byte	.LVL25
+ 963 0055 0100     		.2byte	0x1
+ 964 0057 56       		.byte	0x56
+ 965 0058 00000000 		.4byte	0
+ 966 005c 00000000 		.4byte	0
+ 967              	.LLST3:
+ 968 0060 0C000000 		.4byte	.LVL2
+ 969 0064 1E000000 		.4byte	.LVL5
+ 970 0068 0200     		.2byte	0x2
+ 971 006a 30       		.byte	0x30
+ 972 006b 9F       		.byte	0x9f
+ 973 006c 1E000000 		.4byte	.LVL5
+ 974 0070 4E000000 		.4byte	.LVL11
+ 975 0074 0100     		.2byte	0x1
+ 976 0076 54       		.byte	0x54
+ 977 0077 50000000 		.4byte	.LVL12
+ 978 007b 5C000000 		.4byte	.LVL13
+ 979 007f 0100     		.2byte	0x1
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 20
+
+
+ 980 0081 54       		.byte	0x54
+ 981 0082 5E000000 		.4byte	.LVL14
+ 982 0086 62000000 		.4byte	.LVL15
+ 983 008a 0100     		.2byte	0x1
+ 984 008c 54       		.byte	0x54
+ 985 008d 64000000 		.4byte	.LVL16
+ 986 0091 7E000000 		.4byte	.LVL21
+ 987 0095 0100     		.2byte	0x1
+ 988 0097 54       		.byte	0x54
+ 989 0098 7E000000 		.4byte	.LVL21
+ 990 009c 80000000 		.4byte	.LVL22
+ 991 00a0 0200     		.2byte	0x2
+ 992 00a2 30       		.byte	0x30
+ 993 00a3 9F       		.byte	0x9f
+ 994 00a4 80000000 		.4byte	.LVL22
+ 995 00a8 84000000 		.4byte	.LVL23
+ 996 00ac 0100     		.2byte	0x1
+ 997 00ae 54       		.byte	0x54
+ 998 00af 00000000 		.4byte	0
+ 999 00b3 00000000 		.4byte	0
+ 1000              		.section	.debug_aranges,"",%progbits
+ 1001 0000 24000000 		.4byte	0x24
+ 1002 0004 0200     		.2byte	0x2
+ 1003 0006 00000000 		.4byte	.Ldebug_info0
+ 1004 000a 04       		.byte	0x4
+ 1005 000b 00       		.byte	0
+ 1006 000c 0000     		.2byte	0
+ 1007 000e 0000     		.2byte	0
+ 1008 0010 00000000 		.4byte	.LFB34
+ 1009 0014 8C000000 		.4byte	.LFE34-.LFB34
+ 1010 0018 00000000 		.4byte	.LFB33
+ 1011 001c 44000000 		.4byte	.LFE33-.LFB33
+ 1012 0020 00000000 		.4byte	0
+ 1013 0024 00000000 		.4byte	0
+ 1014              		.section	.debug_ranges,"",%progbits
+ 1015              	.Ldebug_ranges0:
+ 1016 0000 00000000 		.4byte	.LFB34
+ 1017 0004 8C000000 		.4byte	.LFE34
+ 1018 0008 00000000 		.4byte	.LFB33
+ 1019 000c 44000000 		.4byte	.LFE33
+ 1020 0010 00000000 		.4byte	0
+ 1021 0014 00000000 		.4byte	0
+ 1022              		.section	.debug_line,"",%progbits
+ 1023              	.Ldebug_line0:
+ 1024 0000 2A020000 		.section	.debug_str,"MS",%progbits,1
+ 1024      0200CC01 
+ 1024      00000201 
+ 1024      FB0E0D00 
+ 1024      01010101 
+ 1025              	.LASF26:
+ 1026 0000 7365746C 		.ascii	"setlocale\000"
+ 1026      6F63616C 
+ 1026      6500
+ 1027              	.LASF22:
+ 1028 000a 4C43445F 		.ascii	"LCD_Char_1_WriteControl\000"
+ 1028      43686172 
+ 1028      5F315F57 
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 21
+
+
+ 1028      72697465 
+ 1028      436F6E74 
+ 1029              	.LASF9:
+ 1030 0022 5F5F7569 		.ascii	"__uint8_t\000"
+ 1030      6E74385F 
+ 1030      7400
+ 1031              	.LASF18:
+ 1032 002c 73686966 		.ascii	"shiftCount\000"
+ 1032      74436F75 
+ 1032      6E7400
+ 1033              	.LASF8:
+ 1034 0037 756E7369 		.ascii	"unsigned int\000"
+ 1034      676E6564 
+ 1034      20696E74 
+ 1034      00
+ 1035              	.LASF12:
+ 1036 0044 646F7562 		.ascii	"double\000"
+ 1036      6C6500
+ 1037              	.LASF19:
+ 1038 004b 6E616D65 		.ascii	"name\000"
+ 1038      00
+ 1039              	.LASF17:
+ 1040 0050 7374724C 		.ascii	"strLength\000"
+ 1040      656E6774 
+ 1040      6800
+ 1041              	.LASF11:
+ 1042 005a 666C6F61 		.ascii	"float\000"
+ 1042      7400
+ 1043              	.LASF16:
+ 1044 0060 73686966 		.ascii	"shiftDirection\000"
+ 1044      74446972 
+ 1044      65637469 
+ 1044      6F6E00
+ 1045              	.LASF23:
+ 1046 006f 4C43445F 		.ascii	"LCD_Char_1_PrintString\000"
+ 1046      43686172 
+ 1046      5F315F50 
+ 1046      72696E74 
+ 1046      53747269 
+ 1047              	.LASF20:
+ 1048 0086 7375726E 		.ascii	"surname\000"
+ 1048      616D6500 
+ 1049              	.LASF5:
+ 1050 008e 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1050      20756E73 
+ 1050      69676E65 
+ 1050      6420696E 
+ 1050      7400
+ 1051              	.LASF3:
+ 1052 00a0 73686F72 		.ascii	"short unsigned int\000"
+ 1052      7420756E 
+ 1052      7369676E 
+ 1052      65642069 
+ 1052      6E7400
+ 1053              	.LASF1:
+ 1054 00b3 756E7369 		.ascii	"unsigned char\000"
+ 1054      676E6564 
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 22
+
+
+ 1054      20636861 
+ 1054      7200
+ 1055              	.LASF31:
+ 1056 00c1 4C43445F 		.ascii	"LCD_ShiftString\000"
+ 1056      53686966 
+ 1056      74537472 
+ 1056      696E6700 
+ 1057              	.LASF32:
+ 1058 00d1 6D61696E 		.ascii	"main\000"
+ 1058      00
+ 1059              	.LASF21:
+ 1060 00d6 7374726C 		.ascii	"strlen\000"
+ 1060      656E00
+ 1061              	.LASF30:
+ 1062 00dd 433A5C55 		.ascii	"C:\\Users\\oggih\\OneDrive\\Documents\\PSoC Creator"
+ 1062      73657273 
+ 1062      5C6F6767 
+ 1062      69685C4F 
+ 1062      6E654472 
+ 1063 010b 5C4C525C 		.ascii	"\\LR\\LR2.cydsn\000"
+ 1063      4C52322E 
+ 1063      63796473 
+ 1063      6E00
+ 1064              	.LASF7:
+ 1065 0119 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1065      206C6F6E 
+ 1065      6720756E 
+ 1065      7369676E 
+ 1065      65642069 
+ 1066              	.LASF10:
+ 1067 0130 75696E74 		.ascii	"uint8_t\000"
+ 1067      385F7400 
+ 1068              	.LASF28:
+ 1069 0138 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1069      43313120 
+ 1069      352E342E 
+ 1069      31203230 
+ 1069      31363036 
+ 1070 016b 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1070      20726576 
+ 1070      6973696F 
+ 1070      6E203233 
+ 1070      37373135 
+ 1071 019e 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1071      66756E63 
+ 1071      74696F6E 
+ 1071      2D736563 
+ 1071      74696F6E 
+ 1072              	.LASF14:
+ 1073 01c6 73697A65 		.ascii	"sizetype\000"
+ 1073      74797065 
+ 1073      00
+ 1074              	.LASF6:
+ 1075 01cf 6C6F6E67 		.ascii	"long long int\000"
+ 1075      206C6F6E 
+ 1075      6720696E 
+ 1075      7400
+ARM GAS  C:\Users\oggih\AppData\Local\Temp\cccVRH60.s 			page 23
+
+
+ 1076              	.LASF29:
+ 1077 01dd 6D61696E 		.ascii	"main.c\000"
+ 1077      2E6300
+ 1078              	.LASF13:
+ 1079 01e4 63686172 		.ascii	"char\000"
+ 1079      00
+ 1080              	.LASF24:
+ 1081 01e9 4C43445F 		.ascii	"LCD_Char_1_Position\000"
+ 1081      43686172 
+ 1081      5F315F50 
+ 1081      6F736974 
+ 1081      696F6E00 
+ 1082              	.LASF2:
+ 1083 01fd 73686F72 		.ascii	"short int\000"
+ 1083      7420696E 
+ 1083      7400
+ 1084              	.LASF4:
+ 1085 0207 6C6F6E67 		.ascii	"long int\000"
+ 1085      20696E74 
+ 1085      00
+ 1086              	.LASF27:
+ 1087 0210 4C43445F 		.ascii	"LCD_Char_1_Start\000"
+ 1087      43686172 
+ 1087      5F315F53 
+ 1087      74617274 
+ 1087      00
+ 1088              	.LASF15:
+ 1089 0221 6C6F6E67 		.ascii	"long double\000"
+ 1089      20646F75 
+ 1089      626C6500 
+ 1090              	.LASF0:
+ 1091 022d 7369676E 		.ascii	"signed char\000"
+ 1091      65642063 
+ 1091      68617200 
+ 1092              	.LASF25:
+ 1093 0239 43794465 		.ascii	"CyDelay\000"
+ 1093      6C617900 
+ 1094              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

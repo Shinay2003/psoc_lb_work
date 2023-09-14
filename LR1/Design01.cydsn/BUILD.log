@@ -1,0 +1,23 @@
+--------------- Build Started: 06/27/2023 14:56:49 Project: Design01, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+cydsfit.exe -.appdatapath "C:\Users\oggih\AppData\Local\Cypress Semiconductor\PSoC Creator\4.4" -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p "C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\Design01.cyprj" -d CY8C4245AXI-483 -s "C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\Generated_Source\PSoC4" -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
+Elaborating Design...
+ADD: sdb.M0025: error: No input on Instance "Pin_Blue", terminal "y_0".
+ * C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\TopDesign\TopDesign.cysch (Signal: Net_7)
+ * C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\TopDesign\TopDesign.cysch (Shape_4.2)
+ADD: sdb.M0050: error: Terminal "y_0" requires connection when it is visible.
+ * C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\TopDesign\TopDesign.cysch (Signal: Net_7)
+ * C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\TopDesign\TopDesign.cysch (Shape_4.2)
+ADD: sdb.M0025: error: No input on Instance "Pin_Green", terminal "y_0".
+ * C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\TopDesign\TopDesign.cysch (Signal: Net_6)
+ * C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\TopDesign\TopDesign.cysch (Shape_7.2)
+ADD: sdb.M0050: error: Terminal "y_0" requires connection when it is visible.
+ * C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\TopDesign\TopDesign.cysch (Signal: Net_6)
+ * C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\TopDesign\TopDesign.cysch (Shape_7.2)
+ADD: sdb.M0025: error: No input on Instance "Pin_Red", terminal "y_0".
+ * C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\TopDesign\TopDesign.cysch (Signal: Net_5)
+ * C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\TopDesign\TopDesign.cysch (Shape_3.2)
+ADD: sdb.M0050: error: Terminal "y_0" requires connection when it is visible.
+ * C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\TopDesign\TopDesign.cysch (Signal: Net_5)
+ * C:\Users\oggih\OneDrive\Documents\PSoC Creator\LR1\Design01.cydsn\TopDesign\TopDesign.cysch (Shape_3.2)
+Error: fit.M0050: The fitter aborted due to errors, please address all errors and rebuild. (App=cydsfit)
+--------------- Build Failed: 06/27/2023 14:56:52 ---------------
